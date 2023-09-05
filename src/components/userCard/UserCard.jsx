@@ -10,7 +10,7 @@ export default function UserCard() {
       </div>
       <div className={styles.userInfo}>
         <h2>John Doe</h2>
-        <p>JohnDoe@gmail.com</p>
+        <p>JohnDoes@gmail.com</p>
       </div>
     </div>
   );
