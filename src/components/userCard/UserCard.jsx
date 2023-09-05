@@ -9,7 +9,7 @@ export default function UserCard() {
         <img src={userImg} alt="imageOfUser" />
       </div>
       <div className={styles.userInfo}>
-        <h2>John Doe</h2>
+        <h3>John Doe</h3>
         <p>JohnDoes@gmail.com</p>
       </div>
     </div>
