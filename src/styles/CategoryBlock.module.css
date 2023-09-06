@@ -1,0 +1,31 @@
+/* CategoryBlock.module.css */
+.categoryBlock {
+  background-color: #fff;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem auto;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  width: 99.9%;
+}
+
+.categoryTitle {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  color: #018786;
+}
+
+.linkCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  /* gap: 1rem; */
+}
+
+/* Adjust this if needed for responsive layouts */
+/* .linkCard { */
+/* flex-basis: calc(33.33% - 1rem); */
+/* } */
+/* 33.33% width for each card with 1rem gap between them */
