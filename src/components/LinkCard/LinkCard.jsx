@@ -3,13 +3,17 @@ import styles from "../../styles/LinkCard.module.css";
 function LinkCard() {
   return (
     <div className={styles.linkCard}>
-      <h2 className={styles.linkTitle}>Website Title</h2>
+      <div className={styles.Wrapper}>
+        <h2 className={styles.linkTitle}>Website Title </h2>
+      </div>
       <a
         className={styles.linkUrl}
         href="https://www.example.com"
         target="_blank"
       >
-        https://www.example.com
+        <div className={styles.Wrapper}>
+          <p>https://www.example.com</p>
+        </div>
       </a>
       <div className={styles.linkActions}>
         <button className={styles.linkButton}>Edit</button>
