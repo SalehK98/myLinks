@@ -1,12 +1,12 @@
-import React from "react";
 import categories from "../../data/links.json";
+import UserCard from "../UserCard/UserCard.jsx";
 
 console.log(Object.values(categories));
 
 export default function SideMenu() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <div>userCard</div>
+      <UserCard />
       <div style={{ display: "flex", flexDirection: "column" }}>
         {Object.keys(categories).map((category) => {
           return <button key={category}>{category}</button>;
