@@ -9,12 +9,11 @@
   /* height: 100%; */
 }
 
-/* Styles for the side panel */
-.sidePanel {
-  width: 30%; /* Adjust the width as needed */
+/* Styles for the side menu in SideMenu.module.css  */
+
+.sideMenuWrapper {
+  width: 22.25%; /* Adjust the width as needed */
   height: 100vh;
-  padding: 1.25rem; /* Add spacing and styling for the side panel */
-  background-color: aqua;
   position: sticky; /* Make the side panel sticky */
   top: 0; /* Stick to the top of the viewport */
   overflow-y: hidden; /* Add vertical scrolling if the content exceeds viewport height */
@@ -22,7 +21,7 @@
 
 /* Styles for the main content area */
 .mainContent {
-  width: 70%;
+  width: 77.75%;
   flex-grow: 1; /* Allow the main content to grow and fill the remaining space */
   background-color: yellow;
 }

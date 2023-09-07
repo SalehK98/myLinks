@@ -1,11 +1,12 @@
 import categories from "../../data/links.json";
 import UserCard from "../UserCard/UserCard.jsx";
+import styles from "../../styles/sideMenu.module.css";
 
 console.log(Object.values(categories));
 
 export default function SideMenu() {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className={styles.sidePanel}>
       <UserCard />
       <div style={{ display: "flex", flexDirection: "column" }}>
         {Object.keys(categories).map((category) => {

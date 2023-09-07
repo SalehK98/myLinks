@@ -26,6 +26,13 @@ body {
   /* -webkit-text-size-adjust: 100%; */
 }
 
+/* Increase font size for larger screens */
+@media (max-width: 768px) {
+  html {
+    font-size: 10px;
+  }
+}
+
 /* body { */
 /* margin: 0;
   display: flex;

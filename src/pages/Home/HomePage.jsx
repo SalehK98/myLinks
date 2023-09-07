@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <div className={styles.pageContainer}>
-        <div className={styles.sidePanel}>
+        <div className={styles.sideMenuWrapper}>
           {/* Content for the side panel */}
           <SideMenu />
         </div>
