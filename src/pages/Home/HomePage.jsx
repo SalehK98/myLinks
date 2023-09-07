@@ -1,14 +1,14 @@
 import CategoryBlock from "../../components/CategoryBlock/CategoryBlock";
+import SideMenu from "../../components/SideMenu/SideMenu";
 import styles from "../../styles/HomePage.module.css";
 
 export default function HomePage() {
   return (
     <>
       <div className={styles.pageContainer}>
-        <div className={styles.sidePanel}>
+        <div className={styles.sideMenuWrapper}>
           {/* Content for the side panel */}
-          SidePanel
-          <CategoryBlock />
+          <SideMenu />
         </div>
         <div className={styles.mainContent}>
           {/* Content for the main content area */}
