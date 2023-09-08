@@ -23,5 +23,6 @@
 .mainContent {
   width: 77.75%;
   flex-grow: 1; /* Allow the main content to grow and fill the remaining space */
-  background-color: yellow;
+  /* background-color: yellow; */
+  /* padding: 1.5rem 2.4rem; */
 }
