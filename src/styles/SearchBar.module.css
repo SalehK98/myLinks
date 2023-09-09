@@ -1,58 +1,5 @@
 /* SearchBar.module.css */
 
-.SearchBarWrapperBeforeScroll {
-  width: 100%;
-  padding: 1.07rem;
-  position: sticky;
-  top: 0;
-  left: 0;
-  height: 6rem;
-  background-color: #fff;
-  animation: exit 200ms ease-in-out;
-}
-
-@keyframes exit {
-  from {
-    background: linear-gradient(
-      0deg,
-      transparent 2%,
-      rgba(255, 255, 255, 1) 25%
-    );
-  }
-  to {
-    background-color: #fff;
-  }
-}
-
-.SearchBarWrapperAfterScroll {
-  padding: 1.07rem;
-  position: sticky;
-  width: 100%;
-  top: 0;
-  left: 0;
-  color: white;
-  background: linear-gradient(0deg, transparent 2%, rgba(255, 255, 255, 1) 25%);
-
-  height: 6rem;
-  animation: 200ms enter ease-in-out;
-}
-
-@keyframes enter {
-  from {
-    background-color: #fff;
-  }
-
-  to {
-    background: linear-gradient(
-      0deg,
-      transparent 2%,
-      rgba(255, 255, 255, 1) 25%
-    );
-  }
-}
-
-/* ----------------- */
-
 .searchContainer {
   display: flex;
   align-items: center;
