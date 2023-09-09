@@ -1,6 +1,6 @@
 import categories from "../../data/links.json";
-import UserCard from "../UserCard/UserCard.jsx";
 import styles from "../../styles/sideMenu.module.css";
+import UserCard from "../UserCard/UserCard";
 
 console.log(Object.values(categories));
 
