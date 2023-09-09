@@ -1,3 +1,4 @@
+import AddLinkButton from "../../components/AddLinkButton/AddLinkButton";
 import CategoryBlock from "../../components/CategoryBlock/CategoryBlock";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideMenu from "../../components/SideMenu/SideMenu";
@@ -17,6 +18,7 @@ export default function HomePage() {
           <CategoryBlock />
           <CategoryBlock />
           <CategoryBlock />
+          <AddLinkButton />
         </div>
       </div>
     </>

@@ -1,0 +1,13 @@
+.AddLinkWrapper {
+  position: fixed;
+  right: 16px;
+  bottom: 8px;
+  cursor: pointer;
+}
+
+.AddLinkContainer {
+  width: 90%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  text-align: right;
+}
