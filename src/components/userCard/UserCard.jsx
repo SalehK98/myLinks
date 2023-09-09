@@ -1,7 +1,7 @@
 import userImg from "../../assets/download.png";
 import styles from "../../styles/UserCard.module.css";
 
-export default function UserCard() {
+export default function UserBox() {
   return (
     <div className={styles.userCard}>
       <div className={styles.userImage}>
