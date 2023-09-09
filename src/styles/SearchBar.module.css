@@ -1,24 +1,65 @@
 /* SearchBar.module.css */
 
-.SearchBarWrapper {
+.SearchBarWrapperBeforeScroll {
   width: 100%;
-  margin: 0 auto;
-  background-color: red;
+  padding: 1.5rem;
   position: sticky;
   top: 0;
-  padding: 1.5rem;
+  left: 0;
+  opacity: 1;
+  background-color: transparent;
+  animation: exit 200ms ease-in-out;
 }
+
+@keyframes exit {
+  from {
+    background-color: rgb(48, 47, 47);
+    opacity: 1;
+    color: white;
+  }
+  to {
+    background-color: transparent;
+    opacity: 1;
+  }
+}
+
+.SearchBarWrapperAfterScroll {
+  padding: 1.5rem;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  background-color: rgb(48, 47, 47);
+  animation: 200ms enter ease-in-out;
+  color: white;
+}
+
+@keyframes enter {
+  from {
+    background-color: transparent;
+    opacity: 1;
+  }
+
+  to {
+    background-color: rgb(48, 47, 47);
+    opacity: 1;
+    color: white;
+  }
+}
+
+/* ----------------- */
 
 .searchContainer {
   display: flex;
   align-items: center;
   border: 0.0625rem solid #ccc;
-  border-radius: 0.25rem;
-  /* padding: 0.125rem; */
-  background-color: #456799;
+  border-radius: 0.5rem;
+  background-color: #fff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  /* padding: 0.5rem; */
-  width: 98%;
+  padding: 0.9rem;
+  width: 96%;
+  height: 3.3rem;
   margin: 0 auto;
 }
 
@@ -26,8 +67,8 @@
   flex-grow: 1;
   border: none;
   outline: none;
-  /* padding: 0.125rem; */
   font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .searchButton {
