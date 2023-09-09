@@ -1,4 +1,4 @@
-import UserCard from "../UserCard/UserCard.jsx";
+// import UserCard from "../UserCard/UserCard.jsx";
 import categories from "../../data/links.json";
 import styles from "../../styles/SideMenu.module.css";
 
