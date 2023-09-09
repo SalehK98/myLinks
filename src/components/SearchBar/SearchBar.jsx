@@ -1,5 +1,6 @@
 import styles from "../../styles/SearchBar.module.css";
 import { useState, useEffect } from "react";
+import { IconContext } from "react-icons";
 import { BsSearch } from "react-icons/bs";
 
 export default function SearchBar() {
@@ -24,17 +25,23 @@ export default function SearchBar() {
   return (
     <div className={scrollEffect}>
       <div className={styles.searchContainer}>
-        {/* <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" /> */}
-        {/* <i class="fa-solid fa-magnifying-glass" style="color: #85878a;"></i> */}
+        <div className={styles.iconWrapper}>
+          <IconContext.Provider
+            value={{
+              size: "1.7rem",
+              color: "#878787",
+              // className: ".reactSearchIcon",
+            }}
+          >
+            <BsSearch />
+          </IconContext.Provider>
+        </div>
         <input
           type="text"
           placeholder={" Search by name, url or category"}
           className={styles.searchInput}
         />
         {/* <button className={styles.searchButton}> */}
-        {/* Font Awesome search icon */}
-        {/* <i className="fa fa-search"></i> */}
-        <BsSearch />
         {/* </button> */}
       </div>
     </div>
