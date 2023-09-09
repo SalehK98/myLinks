@@ -13,7 +13,7 @@ export default function SideMenu() {
           return <button key={category}>{category}</button>;
         })}
       </div>
-      <div>myLinks Web app 0.0</div>
+      <div>myLinks Web app 0.00</div>
     </div>
   );
 }
