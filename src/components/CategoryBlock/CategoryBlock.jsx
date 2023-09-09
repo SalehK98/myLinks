@@ -1,4 +1,4 @@
-import styles from "../../styles/CategoryBlock.module.css"; // Assuming you have a LinkCard module CSS
+import styles from "../../styles/CategoryBlock.module.css";
 import LinkCard from "../LinkCard/LinkCard";
 
 function CategoryBlock({ categoryTitle, links }) {

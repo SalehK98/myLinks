@@ -6,7 +6,7 @@
   position: sticky;
   top: 0;
   left: 0;
-  height: 6.875rem;
+  height: 6rem;
   background-color: #fff;
   animation: exit 200ms ease-in-out;
 }
@@ -33,7 +33,7 @@
   color: white;
   background: linear-gradient(0deg, transparent 2%, rgba(255, 255, 255, 1) 25%);
 
-  height: 6.875rem;
+  height: 6rem;
   animation: 200ms enter ease-in-out;
 }
 
