@@ -2,49 +2,52 @@
 
 .SearchBarWrapperBeforeScroll {
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.07rem;
   position: sticky;
   top: 0;
   left: 0;
-  opacity: 1;
-  background-color: transparent;
+  height: 6.875rem;
+  background-color: #fff;
   animation: exit 200ms ease-in-out;
 }
 
 @keyframes exit {
   from {
-    background-color: rgb(48, 47, 47);
-    opacity: 1;
-    color: white;
+    background: linear-gradient(
+      0deg,
+      transparent 2%,
+      rgba(255, 255, 255, 1) 25%
+    );
   }
   to {
-    background-color: transparent;
-    opacity: 1;
+    background-color: #fff;
   }
 }
 
 .SearchBarWrapperAfterScroll {
-  padding: 1.5rem;
+  padding: 1.07rem;
   position: sticky;
   width: 100%;
   top: 0;
   left: 0;
-  opacity: 1;
-  background-color: rgb(48, 47, 47);
-  animation: 200ms enter ease-in-out;
   color: white;
+  background: linear-gradient(0deg, transparent 2%, rgba(255, 255, 255, 1) 25%);
+
+  height: 6.875rem;
+  animation: 200ms enter ease-in-out;
 }
 
 @keyframes enter {
   from {
-    background-color: transparent;
-    opacity: 1;
+    background-color: #fff;
   }
 
   to {
-    background-color: rgb(48, 47, 47);
-    opacity: 1;
-    color: white;
+    background: linear-gradient(
+      0deg,
+      transparent 2%,
+      rgba(255, 255, 255, 1) 25%
+    );
   }
 }
 
@@ -57,7 +60,6 @@
   border-radius: 0.5rem;
   background-color: #fff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  /* padding: 0.9rem; */
   width: 96%;
   height: 3.3rem;
   margin: 0 auto;
