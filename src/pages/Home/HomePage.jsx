@@ -1,6 +1,7 @@
 import CategoryBlock from "../../components/CategoryBlock/CategoryBlock";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import UserCard from "../../components/UserCard/UserCard";
 import styles from "../../styles/HomePage.module.css";
 
 export default function HomePage() {
@@ -14,6 +15,7 @@ export default function HomePage() {
         <div className={styles.mainContent}>
           {/* Content for the main content area */}
           <SearchBar />
+          <UserCard />
           <CategoryBlock />
           <CategoryBlock />
           <CategoryBlock />
