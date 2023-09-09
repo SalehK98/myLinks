@@ -1,19 +1,19 @@
-import categories from "../../data/links.json";
 import styles from "../../styles/SideMenu.module.css";
+import CategoriesBox from "../CategoriesBox/CategoriesBox";
 import MemberCard from "../MemberCard/MemberCard";
-
-console.log(Object.values(categories));
 
 export default function SideMenu() {
   return (
     <div className={styles.sidePanel}>
       <MemberCard />
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {Object.keys(categories).map((category) => {
-          return <button key={category}>{category}</button>;
-        })}
+      <CategoriesBox />
+      <div style={{ color: "#fff" }}>
+        <span>
+          <b>MyLinks</b> <i>Web app v1.00</i>
+        </span>
+        <h3></h3>
+        <span>&copy; All copyrights reserved</span>
       </div>
-      <div>myLinks Web app 0.00</div>
     </div>
   );
 }
