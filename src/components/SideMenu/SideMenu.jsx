@@ -1,5 +1,6 @@
 import categories from "../../data/links.json";
 import styles from "../../styles/SideMenu.module.css";
+import Footer from "../Footer/Footer";
 import MemberCard from "../MemberCard/MemberCard";
 
 console.log(Object.values(categories));
@@ -13,7 +14,7 @@ export default function SideMenu() {
           return <button key={category}>{category}</button>;
         })}
       </div>
-      <div>myLinks Web app 0.00</div>
+      <Footer />
     </div>
   );
 }
