@@ -5,9 +5,13 @@ import MemberCard from "../MemberCard/MemberCard";
 export default function SideMenu() {
   return (
     <div className={styles.sidePanel}>
-      <MemberCard />
-      <CategoriesBox />
-      <div style={{ color: "#fff" }}>
+      <div className={styles.MemberCardWrapper}>
+        <MemberCard />
+      </div>
+      <div className={styles.CategoriesBoxWrapper}>
+        <CategoriesBox />
+      </div>
+      <div className={styles.FooterWrapper}>
         <span>
           <b>MyLinks</b> <i>Web app v1.00</i>
         </span>

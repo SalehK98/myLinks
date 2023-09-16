@@ -7,3 +7,18 @@
   justify-content: space-between;
   background-color: #018786;
 }
+
+.MemberCardWrapper {
+  height: 17%;
+  width: 100%;
+}
+.FooterWrapper {
+  height: 8%;
+  width: 100%;
+}
+
+.CategoriesBoxWrapper {
+  height: 75%;
+  width: 100%;
+  flex-grow: 1;
+}
