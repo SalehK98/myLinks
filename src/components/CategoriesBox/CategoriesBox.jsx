@@ -41,9 +41,15 @@ const CategoryBox = () => {
   ]);
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [isEditModeButton, setIsEditModeButton] = useState(true);
 
-  const handleEditClick = () => {
-    setEditing(true);
+  // const handleEditClick = () => {
+
+  // };
+
+  const toggleClass = () => {
+    setIsEditModeButton(!isEditModeButton); // Toggle the state
+    setEditing(!editing);
   };
 
   const handleDeleteCategory = (index) => {
@@ -60,33 +66,43 @@ const CategoryBox = () => {
     }
   };
 
+  const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
+
   return (
     <div className={styles.CategoriesBox}>
-      <h2>Categories</h2>
-      <button onClick={handleEditClick}>Edit</button>
-      <ul>
-        {categories.map((category, index) => (
-          <li key={index}>
-            {editing && (
-              <button onClick={() => handleDeleteCategory(index)}>
-                Delete
-              </button>
-            )}
-            {category}
-          </li>
-        ))}
-      </ul>
-      {editing && (
-        <div>
-          <input
-            type="text"
-            placeholder="New Category"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
-          />
-          <button onClick={handleAddCategory}>Add</button>
-        </div>
-      )}
+      <div className={styles.boxTitle}>
+        <h2>Categories</h2>
+        <button onClick={toggleClass} className={buttonClass}></button>
+      </div>
+      <div className={styles.ulWrapper}>
+        {editing && (
+          <div className={styles.addCategoryContainer}>
+            <input
+              type="text"
+              placeholder="New Category"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+            <button onClick={handleAddCategory}>Add</button>
+          </div>
+        )}
+        <ul>
+          {!editing && (
+            <li key="showAll" id="showAll">
+              Show All
+            </li>
+          )}
+
+          {categories.map((category, index) => (
+            <li key={index}>
+              {category}
+              {editing && (
+                <button onClick={() => handleDeleteCategory(index)}></button>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
