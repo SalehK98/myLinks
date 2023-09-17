@@ -1,0 +1,65 @@
+.pageContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #018786;
+  background-image: url("../assets/loginBg.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 400;
+}
+
+.title img {
+  width: 4rem;
+}
+
+.title span {
+  font-size: 2rem;
+}
+
+.errorMessage,
+.downloadBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.875rem;
+  color: #fff;
+}
+
+.downloadButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15.5rem;
+  height: 4.438rem;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  margin: 1.172rem;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.downloadButton img {
+  width: 18.75rem;
+  margin: 0;
+  padding: 0;
+}

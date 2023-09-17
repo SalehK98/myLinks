@@ -6,7 +6,7 @@ export default function LoginPage() {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.title}>
-        <img src={linkIcon} />
+        <img src={linkIcon} alt="Link Icon" />
         <h1>
           &nbsp;<b>MyLinks</b>
         </h1>
