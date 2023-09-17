@@ -1,81 +1,38 @@
-/* .pageContainer {
-  background-color: #018786;
-  width: 100%;
-  height: 100vh;
-} */
 /* Login.css */
 .loginContainer {
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin-top: 2rem; */
-  /* background-color: #018786; */
+  justify-content: center;
+  background-color: #018786;
   background-image: url("../assets/loginBg.png");
-  background-size: cover;
-
-  height: 100vh;
-  width: 100%;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
 }
 
 .title {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-top: 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #fff;
   font-weight: 400;
 }
 
-.welcomeBox {
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  text-align: center;
-  width: 20rem;
-  margin-bottom: 1rem;
+.title img {
+  width: 4rem;
 }
 
-.welcomeText {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.title span {
+  font-size: 2rem;
 }
 
-.mustLoginText {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-.googleLoginButton {
-  display: flex;
-  align-items: center;
-  background-color: #4285f4;
-  color: #fff;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  cursor: pointer;
-  width: 100%;
-}
-
-.googleIcon {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-}
-
-.termsContainer {
-  font-size: 0.875rem;
-  margin-top: 1rem;
-  text-align: center;
-}
-
-.termsText a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: bold;
-}
-
-.termsText a:hover {
-  text-decoration: underline;
+.cardWrapper {
+  margin-top: 3rem;
+  box-sizing: border-box;
 }
