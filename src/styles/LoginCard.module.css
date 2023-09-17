@@ -1,0 +1,56 @@
+.loginCardContainer {
+  border: 1px solid #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  width: 85%;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.welcomeText {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.mustLoginText {
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.744);
+  margin-bottom: 1rem;
+}
+
+.googleLoginButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #fff;
+  color: #000;
+  padding: 0.7rem;
+  border: 0.065rem solid #ccc;
+  border-radius: 2.969rem;
+  font-size: 1.563rem;
+  cursor: pointer;
+  width: 85%;
+  margin: 0 auto;
+}
+
+.googleIcon {
+  width: 9%;
+}
+
+.termsContainer {
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.termsText a {
+  text-decoration: none;
+  color: #03dac5;
+  font-weight: bold;
+}
+
+.termsText a:hover {
+  text-decoration: underline;
+}

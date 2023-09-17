@@ -1,0 +1,38 @@
+/* Login.css */
+.loginContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #018786;
+  background-image: url("../assets/loginBg.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 400;
+}
+
+.title img {
+  width: 4rem;
+}
+
+.title span {
+  font-size: 2rem;
+}
+
+.cardWrapper {
+  margin-top: 3rem;
+  box-sizing: border-box;
+}
