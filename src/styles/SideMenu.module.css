@@ -6,6 +6,8 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: #018786;
+  background-image: url("../assets//sideMenuBg.png");
+  background-size: 100% 100%;
 }
 
 .MemberCardWrapper {
