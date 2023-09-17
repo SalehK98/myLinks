@@ -60,6 +60,7 @@
   cursor: pointer;
   font-size: 1rem;
 }
+
 .CategoriesBox .boxTitle .editButton {
   width: 2.5rem;
   height: 2.85rem;
@@ -128,19 +129,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 90%;
+  height: 2.6rem;
 }
 
 .CategoriesBox li button {
   /* background-color: #dc3545; */
   margin-left: 0.5rem;
   background-image: url("../assets/delete_FILL0_wght400_GRAD0_opsz24.svg");
-  width: 2.5rem;
-  height: 2.85rem;
+  width: 1.5rem;
+  height: 1.85rem;
   background-color: transparent;
   /* border: 1px solid #ccc; */
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
+  /* background-color: red; */
 }
 
 .addCategoryContainer {
