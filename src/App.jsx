@@ -1,13 +1,14 @@
 import "./App.css";
-import CategoryBlock from "./components/CategoryBlock/CategoryBlock";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
+import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
 
 function App() {
   return (
     <>
       {/* <HomePage /> */}
-      <LoginPage />
+      {/* <LoginPage /> */}
+      <NotSubscribedPage />
     </>
   );
 }

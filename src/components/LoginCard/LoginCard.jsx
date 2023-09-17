@@ -9,7 +9,7 @@ export default function LoginCard() {
         You must login with you google account to continue
       </p>
       <button className={styles.googleLoginButton}>
-        <img src={googleIcon} className={styles.googleIcon} />
+        <img src={googleIcon} className={styles.googleIcon} alt="Google Icon" />
         <span>Log in with Google</span>
       </button>
       <div className={styles.termsContainer}>
