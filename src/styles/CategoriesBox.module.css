@@ -43,7 +43,7 @@
 .CategoriesBox .boxTitle .editButton {
   width: 2.5rem;
   height: 2.85rem;
-  background-image: url("../assets/edit_FILL0_wght400_GRAD0_opsz24.svg");
+  background-image: url("../assets/icons/edit_FILL0_wght400_GRAD0_opsz24.svg");
   background-color: transparent;
   border: 0.063rem solid #ccc;
   background-size: 50%;
@@ -54,7 +54,7 @@
 .CategoriesBox .boxTitle .doneButton {
   width: 2.5rem;
   height: 2.85rem;
-  background-image: url("../assets/done_FILL0_wght400_GRAD0_opsz24.svg");
+  background-image: url("../assets/icons/done_FILL0_wght400_GRAD0_opsz24.svg");
   background-color: transparent;
   border: 0.063rem solid #ccc;
   background-size: 50%;
@@ -122,7 +122,7 @@
 .CategoriesBox li button {
   /* background-color: #dc3545; */
   margin-right: 0.6rem;
-  background-image: url("../assets/delete_FILL0_wght400_GRAD0_opsz24.svg");
+  background-image: url("../assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg");
   width: 1.5rem;
   height: 1.85rem;
   background-color: transparent;
