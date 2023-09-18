@@ -21,6 +21,7 @@ function App() {
       element: <NotSubscribedPage />,
       errorElement: <>Error...</>,
     },
+    { errorElement: <>Error...</> },
   ]);
   return (
     <>
