@@ -1,18 +1,14 @@
 import styles from "../../styles/LinkCard.module.css";
 
-function LinkCard() {
+function LinkCard({ link }) {
   return (
     <div className={styles.linkCard}>
       <div className={styles.Wrapper}>
         <h2 className={styles.linkTitle}>Website Title </h2>
       </div>
-      <a
-        className={styles.linkUrl}
-        href="https://www.example.com"
-        target="_blank"
-      >
+      <a className={styles.linkUrl} href={link} target="_blank">
         <div className={styles.Wrapper}>
-          <p>https://www.example.com</p>
+          <p>{link}</p>
         </div>
       </a>
       <div className={styles.linkActions}>

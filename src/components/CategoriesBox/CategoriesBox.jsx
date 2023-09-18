@@ -1,51 +1,13 @@
-// import categories from "../../data/links.json";
-
-// console.log(Object.values(categories));
-
-// export default function CategoriesBox() {
-//   return (
-//     <div style={{ display: "flex", flexDirection: "column" }}>
-//       {Object.keys(categories).map((category) => {
-//         return <button key={category}>{category}</button>;
-//       })}
-//     </div>
-//   );
-// }
 import { useState } from "react";
+import categoriesList from "../../data/links.json";
 import styles from "../../styles/CategoriesBox.module.css"; // Import the CSS module
 
-const CategoryBox = () => {
-  const [categories, setCategories] = useState([
-    "Category 1",
-    "Category 2",
-    "Category 3",
-    "Category 4",
-    "Category 5",
-    "Category 6",
-    "Category 7",
-    "Category 8",
-    "Category 9",
-    "Category 10",
-    "Category 11",
-    "Category 12",
-    "Category 13",
-    "Category 14",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-    "Category 15",
-  ]);
+export default function CategoriesBox() {
+  const catList = Object.keys(categoriesList);
+  const [categories, setCategories] = useState(catList);
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [isEditModeButton, setIsEditModeButton] = useState(true);
-
-  // const handleEditClick = () => {
-
-  // };
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
@@ -105,6 +67,4 @@ const CategoryBox = () => {
       </div>
     </div>
   );
-};
-
-export default CategoryBox;
+}
