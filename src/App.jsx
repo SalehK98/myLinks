@@ -2,13 +2,29 @@ import "./App.css";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <LoginPage />,
+      errorElement: <>Error...</>,
+    },
+    {
+      path: "/home",
+      element: <HomePage />,
+      errorElement: <>Error...</>,
+    },
+    {
+      path: "/not-subscribed",
+      element: <NotSubscribedPage />,
+      errorElement: <>Error...</>,
+    },
+  ]);
   return (
     <>
-      {/* <HomePage /> */}
-      {/* <LoginPage /> */}
-      <NotSubscribedPage />
+      <RouterProvider router={router} />
     </>
   );
 }
