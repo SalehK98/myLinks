@@ -44,6 +44,7 @@ export default function CategoriesBox() {
               placeholder="New Category"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
+              maxLength="40"
             />
             <button onClick={handleAddCategory}>Add</button>
           </div>
@@ -57,7 +58,7 @@ export default function CategoriesBox() {
 
           {categories.map((category, index) => (
             <li key={index}>
-              {category}
+              <span>{category}</span>
               {editing && (
                 <button onClick={() => handleDeleteCategory(index)}></button>
               )}

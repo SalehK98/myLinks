@@ -16,5 +16,31 @@
     "https://fontawesome.com/",
     "https://fontawesome.com/",
     "https://fontawesome.com/"
-  ]
+  ],
+  "Category Five": ["https://wikipedia.org"],
+  "Category Six": [
+    "https://github.com",
+    "https://github.com",
+    "https://github.com"
+  ],
+  "Category Seven": ["https://stackoverflow.com"],
+  "Category Eight": [
+    "https://amazon.com",
+    "https://amazon.com",
+    "https://amazon.com",
+    "https://amazon.com",
+    "https://amazon.com"
+  ],
+  "Category Nine": ["https://twitter.com"],
+  "Category Ten": ["https://linkedin.com"],
+  "Category Eleven": ["https://instagram.com"],
+  "Category Twelve": ["https://youtube.com"],
+  "Category Thirteen": ["https://reddit.com"],
+  "Category Fourteen": ["https://ebay.com"],
+  "Category Fifteen": ["https://microsoft.com"],
+  "Category Sixteen": ["https://apple.com"],
+  "Category Seventeen": ["https://adobe.com"],
+  "Category Eighteen": ["https://oracle.com"],
+  "Category Nineteen": ["https://nasa.gov"],
+  "Category Twenty": ["https://netflix.com"]
 }
