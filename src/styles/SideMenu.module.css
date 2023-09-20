@@ -9,3 +9,18 @@
   background-image: url("../assets//sideMenuBg.png");
   background-size: 100% 100%;
 }
+
+.MemberCardWrapper {
+  height: 17%;
+  width: 100%;
+}
+.FooterWrapper {
+  height: 8%;
+  width: 100%;
+}
+
+.CategoriesBoxWrapper {
+  height: 75%;
+  width: 100%;
+  flex-grow: 1;
+}

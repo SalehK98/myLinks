@@ -4,6 +4,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import styles from "../../styles/HomePage.module.css";
 import { useState, useEffect } from "react";
+import categoriesList from "../../data/links.json";
 
 export default function HomePage() {
   const [scrollEffect, setScrollEffect] = useState(
@@ -36,9 +37,15 @@ export default function HomePage() {
           <SearchBar />
         </div>
         <div>
-          <CategoryBlock />
-          <CategoryBlock />
-          <CategoryBlock />
+          {Object.entries(categoriesList).map((category, idx) => {
+            return (
+              <CategoryBlock
+                categoryTitle={category[0]}
+                links={category[1]}
+                key={idx}
+              />
+            );
+          })}
         </div>
         <div className={styles.AddLinkWrapper}>
           <AddLinkButton />
