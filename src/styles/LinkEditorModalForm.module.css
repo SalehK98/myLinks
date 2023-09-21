@@ -2,15 +2,11 @@
 
 /* Container styles */
 .linkEditorForm {
-  width: 41.75rem; /* 835px converted to rem */
-  height: 28.55rem; /* 571px converted to rem */
+  width: 45%;
+  height: 55%;
   padding: 1.5rem;
-  margin: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  background-color: red;
   border: 2px solid rgb(240, 240, 240);
   border-radius: 12px;
   top: 50%;
@@ -18,32 +14,47 @@
   position: fixed;
   transform: translate(-50%, -50%);
   z-index: 1000;
+  overflow-y: auto;
+  background-color: #fff;
+  margin-bottom: 3rem;
 }
 
 /* Form field styles */
 .formField {
-  margin-bottom: 1rem;
+  width: 98%;
+  margin: 0.5rem auto;
+  border-radius: 0.25rem;
+  border: none;
 }
+
+/* .formField input: */
 
 /* Input and select styles */
 .inputField {
+  width: 100%;
   padding: 1rem;
-  margin: 0.5rem 0;
-  border: 1px solid #ccc;
+  border: 0.0625rem solid #ccc;
   border-radius: 0.25rem;
   font-size: 1rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
-/* Checkbox styles */
-.checkboxField {
-  display: flex;
-  align-items: center;
-  margin: 0.5rem 0;
+.inputField:hover {
+  border-color: #018786;
+}
+.inputField:focus {
+  outline: none; /* Remove the default outline */
+  border-color: #018786; /* Set the border color on focus */
+}
+.inputField[type="checkbox"] {
+  width: auto;
+  padding: 1rem;
+  margin-right: 0.5rem;
 }
 
-.checkboxLabel {
-  margin-left: 0.5rem;
-  font-size: 1rem;
+label[for="addToFavorites"] {
+  font-weight: 500;
 }
 
 /* Button styles */
@@ -52,32 +63,22 @@
   justify-content: flex-end;
   align-items: flex-end;
   gap: 1rem; /* Distance between buttons */
+  margin-top: 3rem;
 }
 
 .cancelButton,
 .saveButton {
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  background-color: #007bff; /* Blue color */
-  color: #fff; /* White text color */
+  color: #018786; /* White text color */
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
+  background-color: transparent;
+  font-weight: 550;
 }
 
-select:invalid {
-  color: grey;
-}
-
-select:valid {
-  color: red;
-}
-
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-  .linkEditorForm {
-    width: 100%;
-    height: auto;
-    margin: 1rem;
-  }
+.saveButton {
+  background-color: #018786; /* Blue color */
+  color: #fff;
 }

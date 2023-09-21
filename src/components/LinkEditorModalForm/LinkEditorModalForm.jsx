@@ -48,9 +48,9 @@ export default function LinkEditorModalForm({ onClose }) {
                 <option
                   disabled
                   selected
-                  placeholder={input.label}
                   value=""
                   hidden
+                  style={{ color: "red" }}
                 >
                   Category
                 </option>
@@ -72,19 +72,7 @@ export default function LinkEditorModalForm({ onClose }) {
                 placeholder={input.label}
                 className={styles.inputField}
               ></input>
-              {input.type === "checkbox" && (
-                <span className={styles.checkboxField}>
-                  {" "}
-                  {/* Apply checkbox style */}
-                  <input type="checkbox" name="addToFavorites" />
-                  <label
-                    htmlFor="addToFavorites"
-                    className={styles.checkboxLabel}
-                  >
-                    Add to Favorites
-                  </label>
-                </span>
-              )}
+              {input.type === "checkbox" && input.label}
             </label>
           )}
         </div>
