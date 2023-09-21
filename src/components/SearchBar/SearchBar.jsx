@@ -18,7 +18,7 @@ export default function SearchBar() {
       </div>
       <input
         type="text"
-        placeholder={" Search by name, url or category"}
+        placeholder={" Search by name or url"}
         className={styles.searchInput}
       />
     </div>

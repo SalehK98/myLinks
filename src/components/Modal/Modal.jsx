@@ -17,16 +17,15 @@ export default function Modal({ isOpen, onClose }) {
 
   return createPortal(
     <>
-      <div className="overlay" style={overlay}>
+      <div
+        className="overlay"
+        style={overlay}
+        onClick={() => {
+          onClose(false);
+          document.body.style.overflow = "auto";
+        }}
+      >
         <LinkEditorModalForm onClose={onClose} />
-        {/* hello\
-        <button
-          onClick={() => {
-            onClose(false);
-          }}
-        >
-          click me
-        </button> */}
       </div>
     </>,
     document.getElementById("portal-root")
