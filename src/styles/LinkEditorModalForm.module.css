@@ -43,6 +43,8 @@
   color: #ccc;
 } */
 
+/* -----------------------------------------inputs styles--------------------------------- */
+
 /* Input and select styles */
 .inputField {
   width: 96%;
@@ -70,6 +72,25 @@
 label[for="addToFavorites"] {
   font-weight: 500;
 }
+
+/* -------------------------------------------select styles------------------------------ */
+
+.formField select {
+  /* appearance: none; */
+  color: gray;
+}
+
+.formField select option {
+  color: #000;
+  font-size: 1.2rem;
+  border: px solid black;
+}
+
+.formField select:valid {
+  color: #000;
+}
+
+/* -----------------------------Button styles-------------------------------------------- */
 
 /* Button styles */
 .buttonContainer {

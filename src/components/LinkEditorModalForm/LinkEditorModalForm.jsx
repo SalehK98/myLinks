@@ -52,15 +52,9 @@ export default function LinkEditorModalForm({ onClose }) {
                 id={input.name}
                 className={styles.inputField}
                 required
-                // defaultValue=""
+                defaultValue=""
               >
-                <option
-                  disabled
-                  selected
-                  value=""
-                  hidden
-                  style={{ color: "red" }}
-                >
+                <option disabled value="" hidden>
                   Category
                 </option>
                 {Object.keys(categoriesList).map((category, idx) => {

@@ -17,9 +17,12 @@ export default function SearchBar() {
         </IconContext.Provider>
       </div>
       <input
-        type="text"
+        type="search"
         placeholder={" Search by name or url"}
         className={styles.searchInput}
+        // size="15"
+        // spellCheck
+        // autoCorrect="on"
       />
     </div>
   );
