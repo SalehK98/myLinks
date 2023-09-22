@@ -1,0 +1,119 @@
+/* LinkEditorModalForm.module.css */
+
+/* Container styles */
+.linkEditorForm {
+  width: 45%;
+  height: 55%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 0.125rem solid rgb(240, 240, 240);
+  border-radius: 0.75rem;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  overflow-y: auto;
+  background-color: #fff;
+  margin-bottom: 3rem;
+}
+
+/* Form field styles */
+.formField {
+  width: 98%;
+  margin: 0.5rem auto;
+  border-radius: 0.25rem;
+  border: none;
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
+}
+
+/* .formField input: */
+
+/* .formField label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formField img {
+  background-color: #018786;
+  color: #ccc;
+} */
+
+/* -----------------------------------------inputs styles--------------------------------- */
+
+/* Input and select styles */
+.inputField {
+  width: 96%;
+  padding: 1rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.inputField:hover {
+  border-color: #018786;
+}
+.inputField:focus {
+  outline: none; /* Remove the default outline */
+  border-color: #018786; /* Set the border color on focus */
+}
+.inputField[type="checkbox"] {
+  width: auto;
+  padding: 1rem;
+  margin-right: 0.5rem;
+}
+
+label[for="addToFavorites"] {
+  font-weight: 500;
+}
+
+/* -------------------------------------------select styles------------------------------ */
+
+.formField select {
+  /* appearance: none; */
+  color: gray;
+}
+
+.formField select option {
+  color: #000;
+  font-size: 1.2rem;
+  border: px solid black;
+}
+
+.formField select:valid {
+  color: #000;
+}
+
+/* -----------------------------Button styles-------------------------------------------- */
+
+/* Button styles */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 1rem; /* Distance between buttons */
+  margin-top: 3rem;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #018786; /* White text color */
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  background-color: transparent;
+  font-weight: 550;
+}
+
+.saveButton {
+  background-color: #018786; /* Blue color */
+  color: #fff;
+}

@@ -5,11 +5,14 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import styles from "../../styles/HomePage.module.css";
 import { useState, useEffect } from "react";
 import categoriesList from "../../data/links.json";
+import Modal from "../../components/Modal/Modal";
 
 export default function HomePage() {
   const [scrollEffect, setScrollEffect] = useState(
     styles.SearchBarWrapperBeforeScroll
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onScroll = () => {
     if (window.scrollY >= 1) {
@@ -48,8 +51,9 @@ export default function HomePage() {
           })}
         </div>
         <div className={styles.AddLinkWrapper}>
-          <AddLinkButton />
+          <AddLinkButton onOpen={setIsModalOpen} isModalOpen={isModalOpen} />
         </div>
+        <Modal isOpen={isModalOpen} onClose={setIsModalOpen} />
       </div>
     </div>
   );
