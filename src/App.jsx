@@ -1,4 +1,5 @@
 import "./App.css";
+import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
@@ -21,7 +22,16 @@ function App() {
       element: <NotSubscribedPage />,
       errorElement: <>Error...</>,
     },
-    { errorElement: <>Error...</> },
+
+    
+
+    {
+      path: "/modal",
+      element: <LinkEditorModalForm />,
+      errorElement: <>Error...</>,
+    },
+                                     { errorElement: <>Error...</> },
+
   ]);
   return (
     <>

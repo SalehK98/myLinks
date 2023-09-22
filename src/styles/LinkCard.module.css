@@ -28,9 +28,12 @@
 .linkUrl {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #000000;
+  color: #05af9e;
   margin-top: 0.25rem;
   text-decoration: none;
+}
+.linkUrl:hover {
+  text-decoration: underline;
 }
 
 .linkUrl p {
