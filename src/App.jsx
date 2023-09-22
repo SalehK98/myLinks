@@ -22,16 +22,12 @@ function App() {
       element: <NotSubscribedPage />,
       errorElement: <>Error...</>,
     },
-
-    
-
     {
       path: "/modal",
       element: <LinkEditorModalForm />,
       errorElement: <>Error...</>,
     },
-                                     { errorElement: <>Error...</> },
-
+    { errorElement: <>Error...</> },
   ]);
   return (
     <>
