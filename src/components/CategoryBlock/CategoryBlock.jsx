@@ -6,9 +6,15 @@ function CategoryBlock({ categoryTitle, links }) {
     <div className={styles.categoryBlock}>
       <h2 className={styles.categoryTitle}>{categoryTitle}</h2>
       <div className={styles.linkCardsContainer}>
-        {links.map((link, index) => (
-          <LinkCard key={index} link={link} />
-        ))}
+        {links.length > 0 &&
+          links.map((link, index) => (
+            <LinkCard
+              key={index}
+              url={link.url}
+              title={link.title}
+              category={link.categoryName}
+            />
+          ))}
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ const inputs = [
 
 import categoriesList from "../../data/links.json";
 
-export default function LinkEditorModalForm({ onClose }) {
+export default function LinkEditorModalForm({ onCloseModal }) {
   return (
     <form
       className={styles.linkEditorForm}
@@ -92,7 +92,7 @@ export default function LinkEditorModalForm({ onClose }) {
           onClick={(event) => {
             event.preventDefault();
             document.body.style.overflow = "auto";
-            onClose(false);
+            onCloseModal(false);
           }}
         >
           Cancel

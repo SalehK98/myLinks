@@ -1,32 +1,34 @@
 import { useState } from "react";
-import categoriesList from "../../data/links.json";
+// import categoriesList from "../../data/links.json";
 import styles from "../../styles/CategoriesBox.module.css"; // Import the CSS module
+import { useUserDataContext } from "../../contexts/userDataContext";
 
 export default function CategoriesBox() {
-  const catList = Object.keys(categoriesList);
-  const [categories, setCategories] = useState(catList);
+  // const catList = Object.keys(categoriesList);
+  // const [categories, setCategories] = useState(catList);
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [isEditModeButton, setIsEditModeButton] = useState(true);
+  const { state } = useUserDataContext();
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
     setEditing(!editing);
   };
 
-  const handleDeleteCategory = (index) => {
-    const updatedCategories = [...categories];
-    updatedCategories.splice(index, 1);
-    setCategories(updatedCategories);
-  };
+  // const handleDeleteCategory = (index) => {
+  //   const updatedCategories = [...categories];
+  //   updatedCategories.splice(index, 1);
+  //   setCategories(updatedCategories);
+  // };
 
-  const handleAddCategory = () => {
-    if (newCategory.trim() !== "") {
-      const updatedCategories = [...categories, newCategory];
-      setCategories(updatedCategories);
-      setNewCategory("");
-    }
-  };
+  // const handleAddCategory = () => {
+  //   if (newCategory.trim() !== "") {
+  //     const updatedCategories = [...categories, newCategory];
+  //     setCategories(updatedCategories);
+  //     setNewCategory("");
+  //   }
+  // };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
 
@@ -56,8 +58,13 @@ export default function CategoriesBox() {
             </li>
           )}
 
-          {categories.map((category, index) => (
-            <li key={index}>
+          {state.categories.map((category, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                console.log(category, "was clicked");
+              }}
+            >
               <span>{category}</span>
               {editing && (
                 <button onClick={() => handleDeleteCategory(index)}></button>
