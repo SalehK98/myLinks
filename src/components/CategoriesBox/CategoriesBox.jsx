@@ -1,30 +1,41 @@
 import { useState } from "react";
-import categoriesList from "../../data/links.json";
 import styles from "../../styles/CategoriesBox.module.css"; // Import the CSS module
+import { useUserDataContext } from "../../contexts/userDataContext";
+import firestoreServices from "../../services/firestoreServices";
+import { Tooltip } from "react-tooltip";
 
 export default function CategoriesBox() {
-  const catList = Object.keys(categoriesList);
-  const [categories, setCategories] = useState(catList);
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [isEditModeButton, setIsEditModeButton] = useState(true);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const { state } = useUserDataContext();
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
+    setNewCategory("");
     setEditing(!editing);
   };
 
   const handleDeleteCategory = (index) => {
-    const updatedCategories = [...categories];
+    const updatedCategories = [...state.categories];
     updatedCategories.splice(index, 1);
     setCategories(updatedCategories);
   };
 
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     if (newCategory.trim() !== "") {
-      const updatedCategories = [...categories, newCategory];
-      setCategories(updatedCategories);
-      setNewCategory("");
+      try {
+        await firestoreServices.addNewCategory(state.user.email, newCategory);
+      } catch (error) {
+        console.error("Error adding a new category:", error);
+        setIsTooltipOpen(true);
+      } finally {
+        setNewCategory("");
+        setTimeout(() => {
+          setIsTooltipOpen(false);
+        }, 5000);
+      }
     }
   };
 
@@ -45,8 +56,18 @@ export default function CategoriesBox() {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               maxLength="40"
+              data-tooltip-id="tooltip"
+              onMouseEnter={() => setIsTooltipOpen(false)}
             />
             <button onClick={handleAddCategory}>Add</button>
+
+            <Tooltip
+              id="tooltip"
+              place="bottom"
+              content={`category already exists`}
+              variant="info"
+              isOpen={isTooltipOpen}
+            />
           </div>
         )}
         <ul>
@@ -56,8 +77,13 @@ export default function CategoriesBox() {
             </li>
           )}
 
-          {categories.map((category, index) => (
-            <li key={index}>
+          {state.categories.map((category, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                console.log(category, "was clicked");
+              }}
+            >
               <span>{category}</span>
               {editing && (
                 <button onClick={() => handleDeleteCategory(index)}></button>

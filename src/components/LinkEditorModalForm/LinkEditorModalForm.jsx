@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../styles/LinkEditorModalForm.module.css"; // Import the CSS module
 import editIcon from "../../assets/icons/edit_FILL0_wght400_GRAD0_opsz24.svg";
 import linkIcon from "../../assets/icons/link_FILL0_wght400_GRAD0_opsz24.svg";
+import { useUserDataContext } from "../../contexts/userDataContext";
 
 const inputs = [
   {
@@ -30,7 +31,8 @@ const inputs = [
 
 import categoriesList from "../../data/links.json";
 
-export default function LinkEditorModalForm({ onClose }) {
+export default function LinkEditorModalForm({ onCloseModal }) {
+  const { state } = useUserDataContext();
   return (
     <form
       className={styles.linkEditorForm}
@@ -57,7 +59,7 @@ export default function LinkEditorModalForm({ onClose }) {
                 <option disabled value="" hidden>
                   Category
                 </option>
-                {Object.keys(categoriesList).map((category, idx) => {
+                {state.categories.map((category, idx) => {
                   return (
                     <option value={category} key={idx}>
                       {category}
@@ -92,7 +94,7 @@ export default function LinkEditorModalForm({ onClose }) {
           onClick={(event) => {
             event.preventDefault();
             document.body.style.overflow = "auto";
-            onClose(false);
+            onCloseModal(false);
           }}
         >
           Cancel

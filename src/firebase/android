@@ -1,0 +1,252 @@
+/**
+     * in current shitty implementation a link should have a category that already exists
+     * */
+    fun insertNewLink(email: String, link: Link) {
+        Timber.d("insertNewLink() -> called.")
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val urlsCollection = userDocument.collection(FirestoreCollections.URLS.fieldName)
+        val categoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(link.category)
+
+        urlsCollection.document(link.documentId).set(
+            link.toFBLink()
+        ).addOnSuccessListener {
+            Timber.d("insertNewLink: added")
+            categoryDocument.update(URLS_FIELD, FieldValue.arrayUnion(urlsCollection.document(link.documentId)))
+        }.addOnFailureListener {
+            Timber.e("insertNewLink: failed ${it.message}")
+        }
+    }
+
+    fun insertNewLinks(email: String, currentCategories: List<String>, links: List<Link>) {
+        Timber.d("insertNewLinks() -> called.")
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val urlsCollection = userDocument.collection(FirestoreCollections.URLS.fieldName)
+        val categoriesCollection =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+        val currentCategoriesSet = currentCategories.toHashSet()
+        firestore.runBatch {
+            for (link in links) {
+                it.set(urlsCollection.document(link.documentId), link.toFBLink())
+            }
+        }.addOnSuccessListener {
+            Timber.d("insertNewLinks: batch success")
+            firestore.runBatch {
+                for (link in links) {
+                    if (!currentCategoriesSet.contains(link.category)) {
+                        it.set(
+                            categoriesCollection.document(link.category),
+                            mapOf(URLS_FIELD to emptyList<DocumentReference>())
+                        )
+                    }
+                }
+            }.addOnSuccessListener {
+                firestore.runBatch {
+                    for (link in links) {
+                        it.update(
+                            categoriesCollection.document(link.category),
+                            URLS_FIELD,
+                            FieldValue.arrayUnion(urlsCollection.document(link.documentId))
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateLink(email: String, link: Link, oldLink: Link) {
+        Timber.d("updateLink() -> called.")
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val urlDocument =
+            userDocument.collection(FirestoreCollections.URLS.fieldName)
+                .document(link.documentId)
+        val categoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(link.category)
+        val oldCategoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(oldLink.category)
+        urlDocument.set(
+            link.toFBLink()
+        ).addOnSuccessListener {
+            Timber.d("updateLink: added")
+            firestore.runBatch {
+                it.update(categoryDocument, URLS_FIELD, FieldValue.arrayUnion(urlDocument))
+                it.update(oldCategoryDocument, URLS_FIELD, FieldValue.arrayRemove(urlDocument))
+            }
+        }.addOnFailureListener {
+            Timber.e("updateLink: failed ${it.message}")
+        }
+    }
+
+    fun deleteLink(email: String, link: Link) {
+        Timber.d("deleteLink() -> called.")
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val categoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(link.category)
+        val urlDocument =
+            userDocument.collection(FirestoreCollections.URLS.fieldName)
+                .document(link.documentId)
+        urlDocument.delete().addOnSuccessListener {
+            Timber.d("deleteLink: deleted")
+            categoryDocument.update(URLS_FIELD, FieldValue.arrayRemove(urlDocument))
+        }
+    }
+
+    fun createNewCategory(
+        email: String,
+        categoryName: String
+    ) { // should check if already exists
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val categoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(categoryName)
+        categoryDocument.set(
+            mapOf(URLS_FIELD to emptyList<DocumentReference>())
+        ).addOnSuccessListener {
+            Timber.d("createNewCategory: added")
+        }.addOnFailureListener {
+            Timber.e("createNewCategory: failed ${it.message}")
+        }
+    }
+
+    fun deleteCategory(email: String, categoryName: String) {
+        val userDocument = firestore.collection(FirestoreCollections.USERS.fieldName)
+            .document(email)
+        val categoryDocument =
+            userDocument.collection(FirestoreCollections.CATEGORIES.fieldName)
+                .document(categoryName)
+        categoryDocument.get().addOnSuccessListener { document ->
+            val urls = document.data?.get(URLS_FIELD) ?: return@addOnSuccessListener
+            // TODO: delete all urls
+            // then delete the category itself
+        }
+    }
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+const firestore = // Initialize your Firestore instance here;
+
+function insertNewLink(email, link) {
+  console.log("insertNewLink() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const urlsCollection = userDocument.collection('urls');
+  const categoryDocument = userDocument.collection('categories').doc(link.category);
+
+  urlsCollection.doc(link.documentId).set(
+    link.toFBLink()
+  ).then(() => {
+    console.log("insertNewLink: added");
+    categoryDocument.update({ URLs: firestore.FieldValue.arrayUnion(urlsCollection.doc(link.documentId)) });
+  }).catch((error) => {
+    console.error("insertNewLink: failed", error.message);
+  });
+}
+
+function insertNewLinks(email, currentCategories, links) {
+  console.log("insertNewLinks() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const urlsCollection = userDocument.collection('urls');
+  const categoriesCollection = userDocument.collection('categories');
+  const currentCategoriesSet = new Set(currentCategories);
+
+  const batch = firestore.batch();
+
+  links.forEach((link) => {
+    batch.set(urlsCollection.doc(link.documentId), link.toFBLink());
+  });
+
+  batch.commit().then(() => {
+    console.log("insertNewLinks: batch success");
+    const batch2 = firestore.batch();
+
+    links.forEach((link) => {
+      if (!currentCategoriesSet.has(link.category)) {
+        batch2.set(
+          categoriesCollection.doc(link.category),
+          { URLs: [] }
+        );
+      }
+    });
+
+    batch2.commit().then(() => {
+      const batch3 = firestore.batch();
+
+      links.forEach((link) => {
+        batch3.update(
+          categoriesCollection.doc(link.category),
+          { URLs: firestore.FieldValue.arrayUnion(urlsCollection.doc(link.documentId)) }
+        );
+      });
+
+      batch3.commit();
+    });
+  });
+}
+
+function updateLink(email, link, oldLink) {
+  console.log("updateLink() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const urlDocument = userDocument.collection('urls').doc(link.documentId);
+  const categoryDocument = userDocument.collection('categories').doc(link.category);
+  const oldCategoryDocument = userDocument.collection('categories').doc(oldLink.category);
+
+  urlDocument.set(
+    link.toFBLink()
+  ).then(() => {
+    console.log("updateLink: added");
+    const batch = firestore.batch();
+
+    batch.update(categoryDocument, { URLs: firestore.FieldValue.arrayUnion(urlDocument) });
+    batch.update(oldCategoryDocument, { URLs: firestore.FieldValue.arrayRemove(urlDocument) });
+
+    batch.commit();
+  }).catch((error) => {
+    console.error("updateLink: failed", error.message);
+  });
+}
+
+function deleteLink(email, link) {
+  console.log("deleteLink() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const categoryDocument = userDocument.collection('categories').doc(link.category);
+  const urlDocument = userDocument.collection('urls').doc(link.documentId);
+
+  urlDocument.delete().then(() => {
+    console.log("deleteLink: deleted");
+    categoryDocument.update({ URLs: firestore.FieldValue.arrayRemove(urlDocument) });
+  });
+}
+
+function createNewCategory(email, categoryName) {
+  console.log("createNewCategory() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const categoryDocument = userDocument.collection('categories').doc(categoryName);
+
+  categoryDocument.set({ URLs: [] }).then(() => {
+    console.log("createNewCategory: added");
+  }).catch((error) => {
+    console.error("createNewCategory: failed", error.message);
+  });
+}
+
+function deleteCategory(email, categoryName) {
+  console.log("deleteCategory() -> called.");
+  const userDocument = firestore.collection('users').doc(email);
+  const categoryDocument = userDocument.collection('categories').doc(categoryName);
+
+  categoryDocument.get().then((document) => {
+    const urls = document.data().URLs;
+
+    // TODO: Delete all URLs
+    // Then, delete the category itself
+  });
+}

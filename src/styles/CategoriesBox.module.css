@@ -72,7 +72,7 @@
   list-style-type: none;
   padding: 0;
   overflow-y: scroll;
-  height: 100%;
+  height: 94%;
 }
 
 .CategoriesBox ul::-webkit-scrollbar {
@@ -113,6 +113,7 @@
   align-items: center;
   width: 92%;
   height: 2.6rem;
+  cursor: pointer;
 }
 
 .CategoriesBox li span {

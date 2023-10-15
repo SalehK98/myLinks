@@ -1,0 +1,5 @@
+// actionTypes.js
+export const SET_CATEGORIES = "SET_CATEGORIES";
+export const SET_CATEGORIES_WITH_LINKS = "SET_CATEGORIES_WITH_LINKS";
+export const SET_USER = "SET_USER";
+export const SET_ACTIVE_CATEGORY = "SET_ACTIVE_CATEGORY";

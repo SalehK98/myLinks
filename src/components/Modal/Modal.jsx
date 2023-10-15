@@ -10,10 +10,11 @@ const overlay = {
 };
 import { createPortal } from "react-dom";
 
-export default function Modal({ isOpen, onClose }) {
+export default function Modal({ isOpen, onCloseModal }) {
   console.log("isOpen", isOpen);
   if (!isOpen) return null;
   document.body.style.overflow = "hidden";
+  // const ModalName = LinkEditorModalForm
 
   return createPortal(
     <>
@@ -21,11 +22,11 @@ export default function Modal({ isOpen, onClose }) {
         className="overlay"
         style={overlay}
         onClick={() => {
-          onClose(false);
+          onCloseModal(false);
           document.body.style.overflow = "auto";
         }}
       >
-        <LinkEditorModalForm onClose={onClose} />
+        <LinkEditorModalForm onCloseModal={onCloseModal} />
       </div>
     </>,
     document.getElementById("portal-root")

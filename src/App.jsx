@@ -1,9 +1,11 @@
 import "./App.css";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
+import FirestoreDataComponent from "./components/playground";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { UserDataProvider } from "./contexts/userDataContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,7 +16,11 @@ function App() {
     },
     {
       path: "/home",
-      element: <HomePage />,
+      element: (
+        <UserDataProvider>
+          <HomePage />
+        </UserDataProvider>
+      ),
       errorElement: <>Error...</>,
     },
     {
@@ -25,6 +31,15 @@ function App() {
     {
       path: "/modal",
       element: <LinkEditorModalForm />,
+      errorElement: <>Error...</>,
+    },
+    {
+      path: "/firebase",
+      element: (
+        <UserDataProvider>
+          <FirestoreDataComponent />
+        </UserDataProvider>
+      ),
       errorElement: <>Error...</>,
     },
     { errorElement: <>Error...</> },
