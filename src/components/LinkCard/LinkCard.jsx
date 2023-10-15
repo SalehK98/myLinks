@@ -1,8 +1,10 @@
 import styles from "../../styles/LinkCard.module.css";
 import firestoreServices from "../../services/firestoreServices";
 import { useUserDataContext } from "../../contexts/userDataContext";
+import { useState } from "react";
 
 function LinkCard({ link }) {
+  const [isCopied, setIsCopied] = useState(false);
   const { state } = useUserDataContext();
   const userEmail = state.user.email;
 
@@ -29,6 +31,23 @@ function LinkCard({ link }) {
     }
   };
 
+  const handleCopyLink = async (textToCopy) => {
+    if (navigator.clipboard) {
+      setIsCopied(true);
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        console.log("text copied", textToCopy);
+      } catch (error) {
+        console.error("copy failed", error.message);
+      } finally {
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 2000);
+      }
+    } else {
+      alert("Browser does not support ClipBoard API operations");
+    }
+  };
   return (
     <div className={styles.linkCard}>
       <div className={styles.Wrapper}>
@@ -48,7 +67,12 @@ function LinkCard({ link }) {
           Edit
         </button>
         <span className={styles.linkSeparator}></span>
-        <button className={styles.linkButton}>Copy</button>
+        <button
+          className={styles.linkButton}
+          onClick={() => handleCopyLink(link.url)}
+        >
+          {isCopied ? "Copied" : "Copy"}
+        </button>
         <span className={styles.linkSeparator}></span>
         <button className={styles.linkButton} onClick={handleDeleteLink}>
           Delete
