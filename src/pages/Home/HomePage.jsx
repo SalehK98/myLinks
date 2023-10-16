@@ -15,10 +15,11 @@ export default function HomePage() {
     styles.SearchBarWrapperBeforeScroll
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { state, dispatch } = useUserDataContext();
+  const activeCategory = state.activeCategory;
+  const categoriesWithLinks = state.categoriesWithLinks;
 
   const onScroll = () => {
     if (window.scrollY >= 1) {
@@ -77,17 +78,24 @@ export default function HomePage() {
             <SearchBar />
           </div>
           <div>
-            {Object.values(state.categoriesWithLinks).map((category, idx) => {
-              {
-                return (
-                  <CategoryBlock
-                    categoryTitle={category.id}
-                    links={category.urls}
-                    key={idx}
-                  />
-                );
-              }
-            })}
+            {activeCategory === "all" ? (
+              Object.values(categoriesWithLinks).map((category, idx) => {
+                {
+                  return (
+                    <CategoryBlock
+                      categoryTitle={category.id}
+                      links={category.urls}
+                      key={idx}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <CategoryBlock
+                categoryTitle={categoriesWithLinks[activeCategory].id}
+                links={categoriesWithLinks[activeCategory].urls}
+              />
+            )}
           </div>
           <div className={styles.AddLinkWrapper}>
             <AddLinkButton onOpen={setIsModalOpen} isModalOpen={isModalOpen} />

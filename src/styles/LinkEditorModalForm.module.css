@@ -72,6 +72,9 @@
 label[for="addToFavorites"] {
   font-weight: 500;
 }
+label[for="addToPrivate"] {
+  font-weight: 500;
+}
 
 /* -------------------------------------------select styles------------------------------ */
 

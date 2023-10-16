@@ -103,7 +103,7 @@
   margin: 0.5rem auto;
   display: flex;
   align-items: center;
-  border: 0.063rem solid #ccc;
+  border: 0.12rem solid rgba(42, 154, 154, 255);
   padding: 0.5rem;
   padding-left: 0.8rem;
   /* margin-right: 2rem; */
@@ -132,6 +132,11 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+}
+
+.activeCategory {
+  background-color: rgba(42, 154, 154, 255);
+  font-weight: 500;
 }
 
 /* -----------------------add category --------------------------------------------- */

@@ -17,26 +17,25 @@ function LinkCard({ link }) {
   };
 
   const handleEditLink = async () => {
-    const timeStampId = new Date().getTime().toString();
     try {
-      await firestoreServices.addNewLink(userEmail, timeStampId, {
-        categoryName: "school",
+      await firestoreServices.updateLink(userEmail, link, {
+        categoryName: "movies",
         favorite: 1,
         private: 0,
-        title: "eight",
-        url: "eight.com",
+        title: "nine",
+        url: "nine.com",
       });
     } catch (error) {
       console.error("sth went wrong", error.message);
     }
   };
 
-  const handleCopyLink = async (textToCopy) => {
+  const handleCopyLink = async (newClipText) => {
     if (navigator.clipboard) {
       setIsCopied(true);
       try {
-        await navigator.clipboard.writeText(textToCopy);
-        console.log("text copied", textToCopy);
+        await navigator.clipboard.writeText(newClipText);
+        console.log("text copied", newClipText);
       } catch (error) {
         console.error("copy failed", error.message);
       } finally {

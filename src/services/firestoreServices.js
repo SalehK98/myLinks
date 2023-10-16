@@ -8,6 +8,7 @@ import {
   updateDoc,
   arrayRemove,
   arrayUnion,
+  writeBatch,
 } from "firebase/firestore";
 import db from "../firebase/firebaseConfig";
 import {
@@ -19,6 +20,7 @@ const email = "mylinks.test.s@gmail.com";
 
 // Function to fetch user data
 const getUserData = async (userDocRef) => {
+  console.log("called -> getUserData()");
   const userQuerySnapshot = await getDoc(userDocRef);
 
   if (userQuerySnapshot.exists()) {
@@ -32,6 +34,8 @@ const getUserData = async (userDocRef) => {
 
 // Function to fetch data from subcollections
 const getSubcollectionData = async (userDocRef, subCollections) => {
+  console.log("called -> getSubcollectionData()");
+
   const categoriesSubCollectionData = [];
   const urlsSubCollectionData = [];
 
@@ -68,6 +72,8 @@ export const getAllDataForSingleUser = async () => {
 };
 
 export const addNewLink = async (email, linkId, linkObj) => {
+  console.log("called -> addNewLink()");
+
   const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(
     userDocRef,
@@ -85,6 +91,40 @@ export const addNewLink = async (email, linkId, linkObj) => {
     console.log("new link added successfully");
   } catch (error) {
     console.error("adding a new link failed", error.message);
+  }
+};
+
+export const updateLink = async (email, oldLink, newLink) => {
+  console.log("called -> updateLink()");
+  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const urlDocRef = doc(userDocRef, URLS_SUB_COLLECTION, oldLink.id);
+  try {
+    await setDoc(urlDocRef, newLink);
+    console.log("link data updated");
+    if (oldLink.categoryName === newLink.categoryName) return;
+    const oldCategoryDocRef = doc(
+      userDocRef,
+      CATEGORY_SUB_COLLECTION,
+      oldLink.categoryName
+    );
+    const newCategoryDocRef = doc(
+      userDocRef,
+      CATEGORY_SUB_COLLECTION,
+      newLink.categoryName
+    );
+
+    const batch = writeBatch(db);
+
+    //remove url reference from old category
+    batch.update(oldCategoryDocRef, { urls: arrayRemove(urlDocRef) });
+    //add url reference to new category
+    batch.update(newCategoryDocRef, { urls: arrayUnion(urlDocRef) });
+
+    //commit the batch
+    await batch.commit();
+    console.log("updated categories reference successfully");
+  } catch (error) {
+    console.error("updating link failed", error.message);
   }
 };
 
@@ -109,7 +149,7 @@ export const deleteLink = async (email, link) => {
 };
 
 export const addNewCategory = async (email, categoryName) => {
-  console.log("called -> createNewCategory()");
+  console.log("called -> addNewCategory()");
   const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(userDocRef, CATEGORY_SUB_COLLECTION, categoryName);
   try {
@@ -132,13 +172,36 @@ export const deleteCategory = async (email, categoryName) => {
   console.log("deleteCategory() -> called.");
   const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(userDocRef, CATEGORY_SUB_COLLECTION, categoryName);
+
   try {
-  } catch (error) {}
+    const categoryQuerySnapshot = await getDoc(categoryDocRef);
+    if (!categoryQuerySnapshot.exists()) {
+      console.error("Category does not exist");
+      return; // Category doesn't exist, nothing to delete
+    }
+    const urlsReferences = categoryQuerySnapshot.data().urls || [];
+    const batch = writeBatch(db);
+
+    // Delete the documents from the "URLs" collection
+    urlsReferences.forEach(async (urlRef) => {
+      batch.delete(urlRef);
+    });
+    // Delete the category document itself, no need to update urls array
+    batch.delete(categoryDocRef);
+
+    // Commit the batch
+    await batch.commit();
+    console.log("category deleted successfully");
+  } catch (error) {
+    console.error("failed to delete category", error.message);
+  }
 };
 
 export default {
   getAllDataForSingleUser,
   addNewCategory,
+  deleteCategory,
   addNewLink,
+  updateLink,
   deleteLink,
 };
