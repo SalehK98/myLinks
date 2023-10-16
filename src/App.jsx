@@ -1,6 +1,6 @@
 import "./App.css";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
-import FirestoreDataComponent from "./components/playground";
+// import FirestoreDataComponent from "./components/playground";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
@@ -33,15 +33,15 @@ function App() {
       element: <LinkEditorModalForm />,
       errorElement: <>Error...</>,
     },
-    {
-      path: "/firebase",
-      element: (
-        <UserDataProvider>
-          <FirestoreDataComponent />
-        </UserDataProvider>
-      ),
-      errorElement: <>Error...</>,
-    },
+    // {
+    //   path: "/firebase",
+    //   element: (
+    //     <UserDataProvider>
+    //       <FirestoreDataComponent />
+    //     </UserDataProvider>
+    //   ),
+    //   errorElement: <>Error...</>,
+    // },
     { errorElement: <>Error...</> },
   ]);
   return (
