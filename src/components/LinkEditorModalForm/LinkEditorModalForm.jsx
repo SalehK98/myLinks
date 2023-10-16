@@ -3,6 +3,7 @@ import styles from "../../styles/LinkEditorModalForm.module.css"; // Import the 
 import editIcon from "../../assets/icons/edit_FILL0_wght400_GRAD0_opsz24.svg";
 import linkIcon from "../../assets/icons/link_FILL0_wght400_GRAD0_opsz24.svg";
 import { useUserDataContext } from "../../contexts/userDataContext";
+import firestoreServices from "../../services/firestoreServices";
 
 const inputs = [
   {
@@ -27,12 +28,33 @@ const inputs = [
     type: "checkbox",
     name: "addToFavorites",
   },
+  {
+    label: "Add to Private",
+    type: "checkbox",
+    name: "addToPrivate",
+  },
 ];
-
-import categoriesList from "../../data/links.json";
 
 export default function LinkEditorModalForm({ onCloseModal }) {
   const { state } = useUserDataContext();
+  const userEmail = state.user.email;
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+    const timeStampId = new Date().getTime().toString();
+    try {
+      await firestoreServices.addNewLink(userEmail, timeStampId, {
+        categoryName: "work",
+        favorite: 1,
+        private: 0,
+        title: "three",
+        url: "three.com",
+      });
+    } catch (error) {
+      console.error("sth went wrong", error.message);
+    }
+  };
+
   return (
     <form
       className={styles.linkEditorForm}
@@ -99,7 +121,12 @@ export default function LinkEditorModalForm({ onCloseModal }) {
         >
           Cancel
         </button>
-        <button className={styles.saveButton}>Save</button>
+        <button
+          className={styles.saveButton}
+          onClick={(event) => handleSave(event)}
+        >
+          Save
+        </button>
       </div>
     </form>
   );

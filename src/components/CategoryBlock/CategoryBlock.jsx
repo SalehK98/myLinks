@@ -2,7 +2,6 @@ import styles from "../../styles/CategoryBlock.module.css";
 import LinkCard from "../LinkCard/LinkCard";
 
 function CategoryBlock({ categoryTitle, links }) {
-  console.log(links);
   return (
     <div className={styles.categoryBlock}>
       <h2 className={styles.categoryTitle}>{categoryTitle}</h2>

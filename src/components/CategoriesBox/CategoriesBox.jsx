@@ -3,13 +3,15 @@ import styles from "../../styles/CategoriesBox.module.css"; // Import the CSS mo
 import { useUserDataContext } from "../../contexts/userDataContext";
 import firestoreServices from "../../services/firestoreServices";
 import { Tooltip } from "react-tooltip";
+import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function CategoriesBox() {
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [isEditModeButton, setIsEditModeButton] = useState(true);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const { state } = useUserDataContext();
+  const { state, dispatch } = useUserDataContext();
+  const userEmail = state.user.email;
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
@@ -17,10 +19,12 @@ export default function CategoriesBox() {
     setEditing(!editing);
   };
 
-  const handleDeleteCategory = (index) => {
-    const updatedCategories = [...state.categories];
-    updatedCategories.splice(index, 1);
-    setCategories(updatedCategories);
+  const handleDeleteCategory = async (categoryToDelete) => {
+    try {
+      await firestoreServices.deleteCategory(userEmail, categoryToDelete);
+    } catch (error) {
+      console.error("sth went wrong", error.message);
+    }
   };
 
   const handleAddCategory = async () => {
@@ -28,15 +32,23 @@ export default function CategoriesBox() {
       try {
         await firestoreServices.addNewCategory(state.user.email, newCategory);
       } catch (error) {
-        console.error("Error adding a new category:", error);
+        // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
       } finally {
         setNewCategory("");
         setTimeout(() => {
           setIsTooltipOpen(false);
-        }, 5000);
+        }, 1500);
       }
     }
+  };
+
+  const changeActiveCategory = (categoryToBeActive) => {
+    !editing &&
+      dispatch({
+        type: ActionTypes.SET_ACTIVE_CATEGORY,
+        payload: categoryToBeActive,
+      });
   };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
@@ -72,7 +84,14 @@ export default function CategoriesBox() {
         )}
         <ul>
           {!editing && (
-            <li key="showAll" id="showAll">
+            <li
+              key="showAll"
+              id="showAll"
+              onClick={() => changeActiveCategory("all")}
+              className={
+                state.activeCategory === "all" ? styles.activeCategory : ""
+              }
+            >
               Show All
             </li>
           )}
@@ -80,13 +99,21 @@ export default function CategoriesBox() {
           {state.categories.map((category, index) => (
             <li
               key={index}
-              onClick={() => {
-                console.log(category, "was clicked");
-              }}
+              onClick={() => changeActiveCategory(category)}
+              className={
+                !editing && state.activeCategory === category
+                  ? styles.activeCategory
+                  : ""
+              }
             >
               <span>{category}</span>
               {editing && (
-                <button onClick={() => handleDeleteCategory(index)}></button>
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleDeleteCategory(category);
+                  }}
+                ></button>
               )}
             </li>
           ))}
