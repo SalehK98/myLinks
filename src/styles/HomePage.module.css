@@ -89,3 +89,28 @@
   bottom: 2rem;
   width: fit-content;
 }
+
+/* ------------------------ scroll bar styling ----------------------- */
+::-webkit-scrollbar {
+  background-color: #aaaaaa;
+  width: 0.5rem;
+  /* height: 98%; */
+  /* background-color: #dc3545; */
+  max-height: 1%;
+  height: 1%;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 0.5rem;
+  background-color: #aaaaaa;
+  border-radius: 0.938rem;
+  /* height: 1rem; */
+  max-height: 1%;
+  height: 1%;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  max-height: 1%;
+  height: 1%;
+}
