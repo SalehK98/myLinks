@@ -2,11 +2,12 @@
 
 /* Container styles */
 .linkEditorForm {
-  width: 45%;
-  height: 55%;
+  width: 50%;
+  height: 62%;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   border: 0.125rem solid rgb(240, 240, 240);
   border-radius: 0.75rem;
   top: 50%;
@@ -21,10 +22,11 @@
 
 /* Form field styles */
 .formField {
-  width: 98%;
+  min-width: 98%;
   margin: 0.5rem auto;
   border-radius: 0.25rem;
   border: none;
+
   /* display: flex;
   align-items: center;
   justify-content: space-between; */
@@ -69,10 +71,16 @@
   margin-right: 0.5rem;
 }
 
-label[for="addToFavorites"] {
+.inputField[type="checkbox"]:focus,
+.inputField[type="checkbox"]:hover {
+  outline: 0.125rem solid #018786;
+  transition: none; /* Disable any transitions */
+}
+
+label[for="favorite"] {
   font-weight: 500;
 }
-label[for="addToPrivate"] {
+label[for="private"] {
   font-weight: 500;
 }
 
@@ -86,7 +94,7 @@ label[for="addToPrivate"] {
 .formField select option {
   color: #000;
   font-size: 1.2rem;
-  border: px solid black;
+  border: 0.0625rem solid black;
 }
 
 .formField select:valid {
@@ -102,6 +110,7 @@ label[for="addToPrivate"] {
   align-items: flex-end;
   gap: 1rem; /* Distance between buttons */
   margin-top: 3rem;
+  /* justify-self: flex-end; */
 }
 
 .cancelButton,

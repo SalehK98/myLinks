@@ -14,12 +14,11 @@ export default function HomePage() {
   const [scrollEffect, setScrollEffect] = useState(
     styles.SearchBarWrapperBeforeScroll
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { state, dispatch } = useUserDataContext();
-  const activeCategory = state.activeCategory;
-  const categoriesWithLinks = state.categoriesWithLinks;
+  const { userDataState, userDataDispatch } = useUserDataContext();
+  const activeCategory = userDataState.activeCategory;
+  const categoriesWithLinks = userDataState.categoriesWithLinks;
 
   const onScroll = () => {
     if (window.scrollY >= 1) {
@@ -44,9 +43,12 @@ export default function HomePage() {
         const [categories, categoriesWithLinks] =
           transformAllUserData(rawCollectionData);
         // setData(transformedData);
-        dispatch({ type: ActionTypes.SET_USER, payload: user });
-        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: categories });
-        dispatch({
+        userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES,
+          payload: categories,
+        });
+        userDataDispatch({
           type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
           payload: categoriesWithLinks,
         });
@@ -65,7 +67,7 @@ export default function HomePage() {
   if (isLoading) return <>Loading</>;
   if (error) return <>error: {error.message}</>;
 
-  if (state.user) {
+  if (userDataState.user) {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.sideMenuWrapper}>
@@ -98,9 +100,9 @@ export default function HomePage() {
             )}
           </div>
           <div className={styles.AddLinkWrapper}>
-            <AddLinkButton onOpen={setIsModalOpen} isModalOpen={isModalOpen} />
+            <AddLinkButton />
           </div>
-          <Modal isOpen={isModalOpen} onCloseModal={setIsModalOpen} />
+          <Modal />
         </div>
       </div>
     );

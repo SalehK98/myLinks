@@ -3,8 +3,8 @@ import styles from "../../styles/MemberCard.module.css";
 import { useUserDataContext } from "../../contexts/userDataContext";
 
 export default function MemberCard() {
-  const { state } = useUserDataContext();
-  const user = state.user;
+  const { userDataState } = useUserDataContext();
+  const user = userDataState.user;
   return (
     <div className={styles.MemberCard}>
       <div className={styles.userImage}>

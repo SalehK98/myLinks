@@ -6,6 +6,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { UserDataProvider } from "./contexts/userDataContext";
+import { ModalProvider } from "./contexts/ModalContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,7 +19,9 @@ function App() {
       path: "/home",
       element: (
         <UserDataProvider>
-          <HomePage />
+          <ModalProvider>
+            <HomePage />
+          </ModalProvider>
         </UserDataProvider>
       ),
       errorElement: <>Error...</>,
