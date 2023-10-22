@@ -10,8 +10,8 @@ export default function CategoriesBox() {
   const [newCategory, setNewCategory] = useState("");
   const [isEditModeButton, setIsEditModeButton] = useState(true);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const { state, dispatch } = useUserDataContext();
-  const userEmail = state.user.email;
+  const { userDataState, userDataDispatch } = useUserDataContext();
+  const userEmail = userDataState.user.email;
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
@@ -30,7 +30,10 @@ export default function CategoriesBox() {
   const handleAddCategory = async () => {
     if (newCategory.trim() !== "") {
       try {
-        await firestoreServices.addNewCategory(state.user.email, newCategory);
+        await firestoreServices.addNewCategory(
+          userDataState.user.email,
+          newCategory
+        );
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
@@ -45,7 +48,7 @@ export default function CategoriesBox() {
 
   const changeActiveCategory = (categoryToBeActive) => {
     !editing &&
-      dispatch({
+      userDataDispatch({
         type: ActionTypes.SET_ACTIVE_CATEGORY,
         payload: categoryToBeActive,
       });
@@ -89,19 +92,21 @@ export default function CategoriesBox() {
               id="showAll"
               onClick={() => changeActiveCategory("all")}
               className={
-                state.activeCategory === "all" ? styles.activeCategory : ""
+                userDataState.activeCategory === "all"
+                  ? styles.activeCategory
+                  : ""
               }
             >
               Show All
             </li>
           )}
 
-          {state.categories.map((category, index) => (
+          {userDataState.categories.map((category, index) => (
             <li
               key={index}
               onClick={() => changeActiveCategory(category)}
               className={
-                !editing && state.activeCategory === category
+                !editing && userDataState.activeCategory === category
                   ? styles.activeCategory
                   : ""
               }

@@ -2,11 +2,15 @@ import styles from "../../styles/LinkCard.module.css";
 import firestoreServices from "../../services/firestoreServices";
 import { useUserDataContext } from "../../contexts/userDataContext";
 import { useState } from "react";
+import { useModalContext } from "../../contexts/ModalContext";
+import * as ActionTypes from "../../contexts/actionTypes";
 
 function LinkCard({ link }) {
   const [isCopied, setIsCopied] = useState(false);
-  const { state } = useUserDataContext();
-  const userEmail = state.user.email;
+  const { userDataState } = useUserDataContext();
+  const userEmail = userDataState.user.email;
+
+  const { modalDispatch } = useModalContext();
 
   const handleDeleteLink = async () => {
     try {
@@ -17,17 +21,9 @@ function LinkCard({ link }) {
   };
 
   const handleEditLink = async () => {
-    try {
-      await firestoreServices.updateLink(userEmail, link, {
-        categoryName: "movies",
-        favorite: 1,
-        private: 0,
-        title: "nine",
-        url: "nine.com",
-      });
-    } catch (error) {
-      console.error("sth went wrong", error.message);
-    }
+    modalDispatch({ type: ActionTypes.SET_MODAL_MODE, payload: "edit" });
+    modalDispatch({ type: ActionTypes.SET_IS_MODAL_OPEN, payload: true });
+    modalDispatch({ type: ActionTypes.SET_CURRENT_LINK_DATA, payload: link });
   };
 
   const handleCopyLink = async (newClipText) => {

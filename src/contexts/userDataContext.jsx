@@ -11,32 +11,45 @@ export function useUserDataContext() {
 
 const initialState = {
   categories: [],
-  categoriesWithLinks: [],
+  categoriesWithLinks: {},
   user: null,
   activeCategory: "all",
 };
 
-function userDataReducer(state, action) {
+/* initialStateObjExample = {
+categories: ["categoryOne", "categoryTwo", ...],
+categoriesWithLinks: {categoryOne : {id: "CategoryOne",
+   urls: [
+    {id: "123456789", private: 0, favorite: 0, categoryName: "categoryONe", title: "title", url: "url" }, ...]},
+      ...},
+user: {email: "email@email.com", id: "123456789", paid: true/false, paymentUpdateDate: 123456789},
+activeCategory:"all", "categoryOne" ...
+}*/
+
+function userDataReducer(userDataState, action) {
   switch (action.type) {
     case ActionTypes.SET_CATEGORIES:
-      return { ...state, categories: action.payload };
+      return { ...userDataState, categories: action.payload };
     case ActionTypes.SET_CATEGORIES_WITH_LINKS:
-      return { ...state, categoriesWithLinks: action.payload };
+      return { ...userDataState, categoriesWithLinks: action.payload };
     case ActionTypes.SET_USER:
-      return { ...state, user: action.payload };
+      return { ...userDataState, user: action.payload };
     case ActionTypes.SET_ACTIVE_CATEGORY:
-      return { ...state, activeCategory: action.payload };
+      return { ...userDataState, activeCategory: action.payload };
     // Add more cases for other actions as needed
     default:
-      return state;
+      return userDataState;
   }
 }
 
 export function UserDataProvider({ children }) {
-  const [state, dispatch] = useReducer(userDataReducer, initialState);
+  const [userDataState, userDataDispatch] = useReducer(
+    userDataReducer,
+    initialState
+  );
 
   return (
-    <userDataContext.Provider value={{ state, dispatch }}>
+    <userDataContext.Provider value={{ userDataState, userDataDispatch }}>
       {children}
     </userDataContext.Provider>
   );

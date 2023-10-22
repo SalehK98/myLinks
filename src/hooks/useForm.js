@@ -3,9 +3,16 @@ import { useState } from "react";
 function useForm(initialValue) {
   const [values, setValues] = useState(initialValue);
 
-  const handleChange = (event) => {
+  const handleChange = (event, isChecked, setIsChecked) => {
     const { name, type } = event.target;
     let { value } = event.target;
+    console.log();
+    if (type === "checkbox") {
+      setIsChecked({
+        ...isChecked,
+        [name]: !isChecked[name],
+      });
+    }
     value = type === "checkbox" ? (value === "0" ? 1 : 0) : value;
     setValues({ ...values, [name]: value });
   };
