@@ -32,6 +32,10 @@ export default function HomePage() {
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   });
 
   useEffect(() => {
@@ -62,7 +66,7 @@ export default function HomePage() {
     };
 
     fetchCollectionData();
-  }, []);
+  }, [userDataState.change]);
 
   if (isLoading) return <>Loading</>;
   if (error) return <>error: {error.message}</>;

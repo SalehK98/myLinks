@@ -7,3 +7,4 @@ export const SET_MODAL_MODE = "SET_MODAL_MODE";
 export const SET_IS_MODAL_OPEN = "SET_IS_MODAL_OPEN";
 export const SET_CURRENT_LINK_DATA = "SET_CURRENT_LINK_DATA";
 export const SET_NEW_LINK_DATA = "SET_NEW_LINK_DATA";
+export const SET_CHANGE = "SET_CHANGE";

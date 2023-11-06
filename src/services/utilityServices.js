@@ -1,6 +1,4 @@
-import { inputs } from "../data/formData";
-
-function validateForm(formValues) {
+function validateForm(formValues, inputs) {
   const inputErrors = {};
 
   function isValidURL(url) {
@@ -26,7 +24,7 @@ function validateForm(formValues) {
   return inputErrors;
 }
 
-function setFormErrors(inputErrors, isInputError, setIsInputErrors) {
+function setFormErrors(inputErrors, isInputError, setIsInputErrors, inputs) {
   const updatedIsInputError = { ...isInputError };
 
   inputs.forEach((input) => {
@@ -57,4 +55,14 @@ function clearError(inputName, isInputError, setIsInputError) {
   });
 }
 
-export default { validateForm, setFormErrors, clearError };
+export const handleChecked = (values, setIsChecked) => {
+  const favoriteChecked = values.favorite === 1 ? true : false;
+  const PrivateChecked = values.private === 1 ? true : false;
+  const newIsChecked = {
+    favorite: favoriteChecked,
+    private: PrivateChecked,
+  };
+  setIsChecked(newIsChecked);
+};
+
+export default { validateForm, setFormErrors, clearError, handleChecked };

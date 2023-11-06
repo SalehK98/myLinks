@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../../styles/CategoriesBox.module.css"; // Import the CSS module
 import { useUserDataContext } from "../../contexts/userDataContext";
 import firestoreServices from "../../services/firestoreServices";
@@ -12,11 +12,20 @@ export default function CategoriesBox() {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const { userDataState, userDataDispatch } = useUserDataContext();
   const userEmail = userDataState.user.email;
+  const [localCategories, setLocalCategories] = useState([
+    ...userDataState.categories,
+  ]);
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
     setNewCategory("");
     setEditing(!editing);
+    editing
+      ? userDataDispatch({
+          type: ActionTypes.SET_CHANGE,
+          payload: userDataState.change + 1,
+        })
+      : "";
   };
 
   const handleDeleteCategory = async (categoryToDelete) => {
@@ -34,6 +43,7 @@ export default function CategoriesBox() {
           userDataState.user.email,
           newCategory
         );
+        setLocalCategories((prev) => [...prev, newCategory]);
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
@@ -55,6 +65,10 @@ export default function CategoriesBox() {
   };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
+
+  useEffect(() => {
+    console.log(localCategories);
+  }, [localCategories]);
 
   return (
     <div className={styles.CategoriesBox}>

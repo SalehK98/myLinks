@@ -14,6 +14,7 @@ const initialState = {
   categoriesWithLinks: {},
   user: null,
   activeCategory: "all",
+  change: 0,
 };
 
 /* initialStateObjExample = {
@@ -36,6 +37,8 @@ function userDataReducer(userDataState, action) {
       return { ...userDataState, user: action.payload };
     case ActionTypes.SET_ACTIVE_CATEGORY:
       return { ...userDataState, activeCategory: action.payload };
+    case ActionTypes.SET_CHANGE:
+      return { ...userDataState, change: action.payload };
     // Add more cases for other actions as needed
     default:
       return userDataState;

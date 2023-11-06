@@ -2,7 +2,7 @@ import styles from "../../styles/LinkEditorModalForm.module.css"; // Import the 
 import { useUserDataContext } from "../../contexts/userDataContext";
 import firestoreServices from "../../services/firestoreServices";
 import useForm from "../../hooks/useForm";
-import { inputs, initialValues, InputErrorObj } from "../../data/formData";
+import { inputs, InputErrorObj } from "../../data/formData";
 import utilityServices from "../../services/utilityServices";
 import { Tooltip } from "react-tooltip";
 import { useState, useEffect } from "react";
@@ -22,17 +22,7 @@ export default function LinkEditorModalForm() {
   const [values, handleChange, resetFrom] = useForm(modalState.currentLinkData);
 
   useEffect(() => {
-    const handleChecked = () => {
-      const favoriteChecked = values.favorite === 1 ? true : false;
-      const PrivateChecked = values.private === 1 ? true : false;
-      const newIsChecked = {
-        favorite: favoriteChecked,
-        private: PrivateChecked,
-      };
-      setIsChecked(newIsChecked);
-    };
-
-    handleChecked();
+    utilityServices.handleChecked(values, setIsChecked);
   }, []);
 
   const closeModal = () => {
@@ -42,10 +32,15 @@ export default function LinkEditorModalForm() {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    const inputErrors = utilityServices.validateForm(values);
+    const inputErrors = utilityServices.validateForm(values, inputs);
     console.log(inputErrors);
     if (Object.keys(inputErrors).length > 0) {
-      utilityServices.setFormErrors(inputErrors, isInputError, setIsInputError);
+      utilityServices.setFormErrors(
+        inputErrors,
+        isInputError,
+        setIsInputError,
+        inputs
+      );
       return;
     }
     console.log("Form is valid:", values);
