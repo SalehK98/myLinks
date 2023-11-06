@@ -10,7 +10,7 @@ import {
   arrayUnion,
   writeBatch,
 } from "firebase/firestore";
-import db from "../firebase/firebaseConfig";
+import { firestoreDb } from "../firebase/firebaseConfig";
 import {
   PARENT_COLLECTION_NAME,
   CATEGORY_SUB_COLLECTION,
@@ -18,14 +18,32 @@ import {
 } from "../firebase/constants";
 const email = "mylinks.test.s@gmail.com";
 
-// Function to fetch user data
-const getUserData = async (userDocRef) => {
-  console.log("called -> getUserData()");
+const checkUserExists = async (email) => {
+  console.log("called -> checkUserExists()");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const userQuerySnapshot = await getDoc(userDocRef);
+  return [userQuerySnapshot.exists(), userQuerySnapshot];
+};
 
-  if (userQuerySnapshot.exists()) {
+const checkIfUserPaid = async (email) => {
+  console.log("called -> checkIfUserPaid()");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
+  const userQuerySnapshot = await getDoc(userDocRef);
+  const userData = userQuerySnapshot.data();
+  // const userPaymentDate = userData.paid;
+  // const date = new Date(userPaymentDate);
+  // console.log(date);
+  return userData.paid;
+};
+
+// Function to fetch user data
+const getUserData = async (email) => {
+  console.log("called -> getUserData()");
+  const [ifUser, snapshot] = await checkUserExists(email);
+
+  if (ifUser) {
     // console.log("User Document data:", userQuerySnapshot.data());
-    return userQuerySnapshot.data();
+    return snapshot.data();
   } else {
     // console.log("No such user document!");
     return null; // Or handle the absence of user data as needed.
@@ -56,9 +74,9 @@ const getSubcollectionData = async (userDocRef, subCollections) => {
 // Function to fetch all data for a single user
 export const getAllDataForSingleUser = async () => {
   console.log("called -> getAllDataForSingleUser()");
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
 
-  const userInfo = await getUserData(userDocRef);
+  const userInfo = await getUserData(email);
   if (!userInfo) {
     return null; // Or handle the absence of user data as needed.
   }
@@ -74,7 +92,7 @@ export const getAllDataForSingleUser = async () => {
 export const addNewLink = async (email, linkId, linkObj) => {
   console.log("called -> addNewLink()");
 
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(
     userDocRef,
     CATEGORY_SUB_COLLECTION,
@@ -96,7 +114,7 @@ export const addNewLink = async (email, linkId, linkObj) => {
 
 export const updateLink = async (email, oldLink, newLink) => {
   console.log("called -> updateLink()");
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const urlDocRef = doc(userDocRef, URLS_SUB_COLLECTION, oldLink.id);
   try {
     await setDoc(urlDocRef, newLink);
@@ -113,7 +131,7 @@ export const updateLink = async (email, oldLink, newLink) => {
       newLink.categoryName
     );
 
-    const batch = writeBatch(db);
+    const batch = writeBatch(firestoreDb);
 
     //remove url reference from old category
     batch.update(oldCategoryDocRef, { urls: arrayRemove(urlDocRef) });
@@ -130,7 +148,7 @@ export const updateLink = async (email, oldLink, newLink) => {
 
 export const deleteLink = async (email, link) => {
   console.log("deleteLink() -> called.");
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(
     userDocRef,
     CATEGORY_SUB_COLLECTION,
@@ -150,7 +168,7 @@ export const deleteLink = async (email, link) => {
 
 export const addNewCategory = async (email, categoryName) => {
   console.log("called -> addNewCategory()");
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(userDocRef, CATEGORY_SUB_COLLECTION, categoryName);
   try {
     // Check if the category already exists
@@ -170,7 +188,7 @@ export const addNewCategory = async (email, categoryName) => {
 
 export const deleteCategory = async (email, categoryName) => {
   console.log("deleteCategory() -> called.");
-  const userDocRef = doc(db, PARENT_COLLECTION_NAME, email);
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const categoryDocRef = doc(userDocRef, CATEGORY_SUB_COLLECTION, categoryName);
 
   try {
@@ -180,7 +198,7 @@ export const deleteCategory = async (email, categoryName) => {
       return; // Category doesn't exist, nothing to delete
     }
     const urlsReferences = categoryQuerySnapshot.data().urls || [];
-    const batch = writeBatch(db);
+    const batch = writeBatch(firestoreDb);
 
     // Delete the documents from the "URLs" collection
     urlsReferences.forEach(async (urlRef) => {
@@ -198,6 +216,8 @@ export const deleteCategory = async (email, categoryName) => {
 };
 
 export default {
+  checkUserExists,
+  checkIfUserPaid,
   getAllDataForSingleUser,
   addNewCategory,
   deleteCategory,

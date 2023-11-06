@@ -1,9 +1,9 @@
 import "./App.css";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
-// import FirestoreDataComponent from "./components/playground";
-import HomePage from "./pages/Home/HomePage";
-import LoginPage from "./pages/Login/LoginPage";
-import NotSubscribedPage from "./pages/NotSubscribed/NotSubscribedPage";
+import Playground from "./components/Playground";
+import HomePage from "./views/Home/HomePage";
+import LoginPage from "./views/Login/LoginPage";
+import NotSubscribedPage from "./views/NotSubscribed/NotSubscribedPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { UserDataProvider } from "./contexts/userDataContext";
 import { ModalProvider } from "./contexts/ModalContext";
@@ -36,15 +36,11 @@ function App() {
       element: <LinkEditorModalForm />,
       errorElement: <>Error...</>,
     },
-    // {
-    //   path: "/firebase",
-    //   element: (
-    //     <UserDataProvider>
-    //       <FirestoreDataComponent />
-    //     </UserDataProvider>
-    //   ),
-    //   errorElement: <>Error...</>,
-    // },
+    {
+      path: "/firebase",
+      element: <Playground />,
+      errorElement: <>Error...</>,
+    },
     { errorElement: <>Error...</> },
   ]);
   return (

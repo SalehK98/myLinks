@@ -1,23 +1,31 @@
+import * as ConfigConst from "./constants";
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
+import {
+  getAuth,
+  connectAuthEmulator,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth"; // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // import firestore from "../firebase/firestore";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import * as firebaseui from "firebaseui";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBc7HKmKtlnrK4fLTpYsusvq86_RiiPkBs",
-  authDomain: "mylinks-1632578191232.firebaseapp.com",
-  databaseURL: "https://mylinks-1632578191232-default-rtdb.firebaseio.com",
-  projectId: "mylinks-1632578191232",
-  storageBucket: "mylinks-1632578191232.appspot.com",
-  messagingSenderId: "74389734135",
-  appId: "1:74389734135:web:256703f83f16cf42e089f2",
-  measurementId: "G-KVKHS76J4J",
+  apiKey: ConfigConst.API_KEY,
+  authDomain: ConfigConst.AUTH_DOMAIN,
+  databaseURL: ConfigConst.DATABASE_URL,
+  projectId: ConfigConst.PROJECT_ID,
+  storageBucket: ConfigConst.STORAGE_BUCKET,
+  messagingSenderId: ConfigConst.MESSAGING_SENDER_ID,
+  appId: ConfigConst.APP_ID,
+  measurementId: ConfigConst.MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -25,7 +33,13 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 // firebaseApps previously initialized using initializeApp()
-const db = getFirestore(app);
-connectFirestoreEmulator(db, "127.0.0.1", 8080);
+export const firestoreDb = getFirestore(app);
+connectFirestoreEmulator(firestoreDb, "127.0.0.1", 8080);
 
-export default db;
+export const auth = getAuth(app);
+connectAuthEmulator(auth, "http://127.0.0.1:9099");
+export const googleProvided = new GoogleAuthProvider();
+
+export const ui = new firebaseui.auth.AuthUI(auth);
+
+export default { firestoreDb, auth, ui, googleProvided };
