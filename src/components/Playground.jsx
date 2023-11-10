@@ -4,15 +4,16 @@ import animation4 from "../assets/animations/Animation4.webm";
 import animation3 from "../assets/animations/69066537-3ead-4bbb-ba53-7db70c15654d.svg";
 import animation6 from "../assets/animations/Animation6.mp4";
 import animationJson from "../assets/animations/AnimationJSon.json";
+import Loader from "./loader/Loader";
 
 export default function Playground() {
   return (
     <>
       {/* <img src={animation} /> */}
       {/* <img src={animationJson} /> */}
-      <div style={{ backgroundColor: "coral" }}>
+      {/* <div style={{ backgroundColor: "coral" }}>
         <img src={animation3} />
-      </div>
+      </div> */}
       {/* <video
         autoPlay
         loop
@@ -25,7 +26,7 @@ export default function Playground() {
         <source src={animation6} type="video/mp4" />
         Your browser does not support the video tag.
       </video> */}
-      <div style={{ backgroundColor: "red" }}>
+      {/* <div style={{ backgroundColor: "red" }}>
         <img src={animation} />
       </div>
       <div style={{ backgroundColor: "green" }}>
@@ -38,7 +39,8 @@ export default function Playground() {
           // width="100%" // Set the width of the iframe
           // height="200" // Set the height of the iframe
         ></iframe>
-      </div>
+      </div> */}
+      <Loader />
     </>
   );
 }

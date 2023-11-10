@@ -20,12 +20,12 @@ export default function CategoriesBox() {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
     setNewCategory("");
     setEditing(!editing);
-    editing
-      ? userDataDispatch({
-          type: ActionTypes.SET_CHANGE,
-          payload: userDataState.change + 1,
-        })
-      : "";
+    // editing
+    //   ? userDataDispatch({
+    //       type: ActionTypes.SET_CHANGE,
+    //       payload: userDataState.change + 1,
+    //     })
+    //   : "";
   };
 
   const handleDeleteCategory = async (categoryToDelete) => {
