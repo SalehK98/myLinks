@@ -1,4 +1,5 @@
 import "./App.css";
+// import { lazy, Suspense } from "react";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
 import Playground from "./components/Playground";
 import HomePage from "./views/Home/HomePage";
@@ -7,8 +8,11 @@ import NotSubscribedPage from "./views/NotSubscribed/NotSubscribedPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { UserDataProvider } from "./contexts/userDataContext";
 import { ModalProvider } from "./contexts/ModalContext";
+import { useLoginContext } from "./contexts/LoginContext";
 
 function App() {
+  const { loginState } = useLoginContext();
+  console.log("loginState", loginState);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -20,7 +24,11 @@ function App() {
       element: (
         <UserDataProvider>
           <ModalProvider>
+            {/* {loginState.logged && ( */}
+            {/* <Suspense fallback={<>Loading...</>}> */}
             <HomePage />
+            {/* </Suspense> */}
+            {/* )} */}
           </ModalProvider>
         </UserDataProvider>
       ),

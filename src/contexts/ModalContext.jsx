@@ -16,18 +16,18 @@ const initialState = {
   NewLinkDataL: {},
 };
 
-function ModalReducer(modalSate, action) {
+function ModalReducer(modalState, action) {
   switch (action.type) {
     case ActionTypes.SET_MODAL_MODE:
-      return { ...modalSate, modalMode: action.payload };
+      return { ...modalState, modalMode: action.payload };
     case ActionTypes.SET_IS_MODAL_OPEN:
-      return { ...modalSate, isModalOpen: action.payload };
+      return { ...modalState, isModalOpen: action.payload };
     case ActionTypes.SET_CURRENT_LINK_DATA:
-      return { ...modalSate, currentLinkData: action.payload };
+      return { ...modalState, currentLinkData: action.payload };
     case ActionTypes.SET_NEW_LINK_DATA:
-      return { ...modalSate, NewLinkDataL: action.payload };
+      return { ...modalState, NewLinkDataL: action.payload };
     default:
-      return modalSate;
+      return modalState;
   }
 }
 
