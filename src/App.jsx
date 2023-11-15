@@ -9,10 +9,13 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { UserDataProvider } from "./contexts/userDataContext";
 import { ModalProvider } from "./contexts/ModalContext";
 import { useLoginContext } from "./contexts/LoginContext";
+import withAccessControl from "./hocs/withAccessControl";
 
 function App() {
   const { loginState } = useLoginContext();
-  console.log("loginState", loginState);
+  const WrappedHomeComponent = withAccessControl(HomePage);
+  const WrappedNotSubscribedComponent = withAccessControl(NotSubscribedPage);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -24,9 +27,10 @@ function App() {
       element: (
         <UserDataProvider>
           <ModalProvider>
-            {/* {loginState.logged && ( */}
+            {/* {loginState.isLogged && ( */}
             {/* <Suspense fallback={<>Loading...</>}> */}
-            <HomePage />
+            <WrappedHomeComponent />
+            {/* <HomePage /> */}
             {/* </Suspense> */}
             {/* )} */}
           </ModalProvider>
@@ -36,7 +40,7 @@ function App() {
     },
     {
       path: "/not-subscribed",
-      element: <NotSubscribedPage />,
+      element: <WrappedNotSubscribedComponent />,
       errorElement: <>Error...</>,
     },
     {

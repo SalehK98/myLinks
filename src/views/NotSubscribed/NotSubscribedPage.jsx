@@ -1,8 +1,13 @@
 import styles from "../../styles/NotSubscribedPage.module.css";
 import linkIcon from "../../assets/icons/icons8-link-96.webp";
 import googlePlayBadge from "../../assets/google-play-badge.png";
+import { useLoginContext } from "../../contexts/LoginContext";
 
 export default function NotSubscribedPage() {
+  const { loginState } = useLoginContext();
+  const { isPaid } = loginState;
+
+  if (isPaid) return <>Loading...</>;
   return (
     <div className={styles.pageContainer}>
       <div className={styles.title}>
