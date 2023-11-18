@@ -29,12 +29,12 @@ export default function LoginCard() {
 
       if (userExists && userIsPaid) {
         console.log(result);
-        // loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
-        // loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
         navigator("/home");
       } else {
-        // loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
-        // loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
+        loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
         navigator("/not-subscribed");
       }
     } catch (error) {
