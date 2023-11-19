@@ -15,23 +15,25 @@ export default function SearchBar() {
   const performSearch = (searchTerm) => {
     const results = {};
 
-    for (const categoryKey in categoriesWithLinks) {
+    // Iterate through categoriesWithLinks and create categories in the result object only if there are matching links
+    Object.keys(categoriesWithLinks).forEach((categoryKey) => {
       const category = categoriesWithLinks[categoryKey];
-      results[category.id] = {
-        id: category.id,
-        links: [],
-      };
 
-      for (const linkKey in category.urls) {
-        const link = category.urls[linkKey];
-        if (
+      // Use Array.filter to get only the links that match the search term
+      const matchingLinks = Object.values(category.urls).filter(
+        (link) =>
           link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           link.url.toLowerCase().includes(searchTerm.toLowerCase())
-        ) {
-          results[category.id].links.push(link);
-        }
+      );
+
+      // Only create a category in the result object if there are matching links
+      if (matchingLinks.length > 0) {
+        results[category.id] = {
+          id: category.id,
+          urls: matchingLinks,
+        };
       }
-    }
+    });
 
     setSearchResults(results);
   };
