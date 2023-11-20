@@ -10,6 +10,7 @@ import { UserDataProvider } from "./contexts/userDataContext";
 import { ModalProvider } from "./contexts/ModalContext";
 import { useLoginContext } from "./contexts/LoginContext";
 import withAccessControl from "./hocs/withAccessControl";
+import { SearchProvider } from "./contexts/SearchContext";
 
 function App() {
   const { loginState } = useLoginContext();
@@ -29,7 +30,9 @@ function App() {
           <ModalProvider>
             {/* {loginState.isLogged && ( */}
             {/* <Suspense fallback={<>Loading...</>}> */}
-            <WrappedHomeComponent />
+            <SearchProvider>
+              <WrappedHomeComponent />
+            </SearchProvider>
             {/* <HomePage /> */}
             {/* </Suspense> */}
             {/* )} */}

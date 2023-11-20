@@ -1,18 +1,34 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styles from "../../styles/SearchBar.module.css";
 import { IconContext } from "react-icons";
 import { BsSearch } from "react-icons/bs";
 import { useUserDataContext } from "../../contexts/userDataContext";
+import { useSearchContext } from "../../contexts/SearchContext";
+import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState({});
+  const { searchDispatch } = useSearchContext();
 
-  console.log("here ", searchTerm, searchResults);
-  const { userDataState } = useUserDataContext();
+  const { userDataState, userDataDispatch } = useUserDataContext();
   const categoriesWithLinks = userDataState.categoriesWithLinks;
+  const prevActiveCategory = userDataState.prevActiveCategory;
+  console.log("here", userDataState.activeCategory, prevActiveCategory);
 
   const performSearch = (searchTerm) => {
+    if (searchTerm === "") {
+      userDataDispatch({
+        type: ActionTypes.SET_ACTIVE_CATEGORY,
+        payload: prevActiveCategory,
+      });
+      return;
+    }
+    userDataDispatch({
+      type: ActionTypes.SET_ACTIVE_CATEGORY,
+      payload: "search",
+    });
+    console.log("here2", userDataState.activeCategory, prevActiveCategory);
+
     const results = {};
 
     // Iterate through categoriesWithLinks and create categories in the result object only if there are matching links
@@ -35,7 +51,10 @@ export default function SearchBar() {
       }
     });
 
-    setSearchResults(results);
+    searchDispatch({
+      type: ActionTypes.SET_SEARCH_RESULT,
+      payload: results,
+    });
   };
 
   const handleSearchTermChange = (e) => {

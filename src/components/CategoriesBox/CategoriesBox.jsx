@@ -62,6 +62,10 @@ export default function CategoriesBox() {
         type: ActionTypes.SET_ACTIVE_CATEGORY,
         payload: categoryToBeActive,
       });
+    userDataDispatch({
+      type: ActionTypes.SET_PREV_ACTIVE_CATEGORY,
+      payload: categoryToBeActive,
+    });
   };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;

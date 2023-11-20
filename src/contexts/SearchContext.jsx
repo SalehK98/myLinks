@@ -18,7 +18,7 @@ const initialState = {
 
 function searchReducer(searchState, action) {
   switch (action.type) {
-    case ActionTypes.SET_SEARCH_RESULT:
+    case ActionTypes.SET_SEARCH_TERM:
       return { ...searchState, searchTerm: action.payload };
     case ActionTypes.SET_SEARCH_RESULT:
       return { ...searchState, searchResult: action.payload };
