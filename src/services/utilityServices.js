@@ -65,4 +65,15 @@ export const handleChecked = (values, setIsChecked) => {
   setIsChecked(newIsChecked);
 };
 
-export default { validateForm, setFormErrors, clearError, handleChecked };
+export const simpleStringSearch = (stringArr, searchTerm) => {
+  console.log("preforming simple string search:", searchTerm);
+  return stringArr.filter((str) => str.includes(searchTerm));
+};
+
+export default {
+  validateForm,
+  setFormErrors,
+  clearError,
+  handleChecked,
+  simpleStringSearch,
+};

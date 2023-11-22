@@ -12,8 +12,7 @@ export function useSearchContext() {
 const initialState = {
   searchTerm: "",
   searchResult: {},
-  searchComponent: "",
-  searchType: "",
+  searchCategory: "",
 };
 
 function searchReducer(searchState, action) {
@@ -22,10 +21,8 @@ function searchReducer(searchState, action) {
       return { ...searchState, searchTerm: action.payload };
     case ActionTypes.SET_SEARCH_RESULT:
       return { ...searchState, searchResult: action.payload };
-    case ActionTypes.SET_SEARCH_COMPONENT:
-      return { ...searchState, searchComponent: action.payload };
-    case ActionTypes.SET_SEARCH_TYPE:
-      return { ...searchState, searchType: action.payload };
+    case ActionTypes.SET_SEARCH_CATEGORY:
+      return { ...searchState, searchCategory: action.payload };
     // Add more cases for other actions as needed
     default:
       return searchState;
