@@ -1,4 +1,5 @@
 import "./App.css";
+// import { lazy, Suspense } from "react";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
 import Playground from "./components/Playground";
 import HomePage from "./views/Home/HomePage";
@@ -7,8 +8,15 @@ import NotSubscribedPage from "./views/NotSubscribed/NotSubscribedPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { UserDataProvider } from "./contexts/userDataContext";
 import { ModalProvider } from "./contexts/ModalContext";
+import { useLoginContext } from "./contexts/LoginContext";
+import withAccessControl from "./hocs/withAccessControl";
+import { SearchProvider } from "./contexts/SearchContext";
 
 function App() {
+  const { loginState } = useLoginContext();
+  const WrappedHomeComponent = withAccessControl(HomePage);
+  const WrappedNotSubscribedComponent = withAccessControl(NotSubscribedPage);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -20,7 +28,14 @@ function App() {
       element: (
         <UserDataProvider>
           <ModalProvider>
-            <HomePage />
+            {/* {loginState.isLogged && ( */}
+            {/* <Suspense fallback={<>Loading...</>}> */}
+            <SearchProvider>
+              <WrappedHomeComponent />
+            </SearchProvider>
+            {/* <HomePage /> */}
+            {/* </Suspense> */}
+            {/* )} */}
           </ModalProvider>
         </UserDataProvider>
       ),
@@ -28,7 +43,7 @@ function App() {
     },
     {
       path: "/not-subscribed",
-      element: <NotSubscribedPage />,
+      element: <WrappedNotSubscribedComponent />,
       errorElement: <>Error...</>,
     },
     {

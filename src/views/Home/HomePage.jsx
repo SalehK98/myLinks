@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import AddLinkButton from "../../components/AddLinkButton/AddLinkButton";
-import CategoryBlock from "../../components/CategoryBlock/CategoryBlock";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import Modal from "../../components/Modal/Modal";
@@ -10,6 +9,7 @@ import styles from "../../styles/HomePage.module.css";
 import * as ActionTypes from "../../contexts/actionTypes";
 import { useUserDataContext } from "../../contexts/userDataContext";
 import Loader from "../../components/loader/Loader";
+import MainContent from "../../components/MainContent/MainContent";
 
 export default function HomePage() {
   const [scrollEffect, setScrollEffect] = useState(
@@ -18,8 +18,6 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { userDataState, userDataDispatch } = useUserDataContext();
-  const activeCategory = userDataState.activeCategory;
-  const categoriesWithLinks = userDataState.categoriesWithLinks;
 
   const onScroll = () => {
     if (window.scrollY >= 1) {
@@ -85,24 +83,7 @@ export default function HomePage() {
             <SearchBar />
           </div>
           <div>
-            {activeCategory === "all" ? (
-              Object.values(categoriesWithLinks).map((category, idx) => {
-                {
-                  return (
-                    <CategoryBlock
-                      categoryTitle={category.id}
-                      links={category.urls}
-                      key={idx}
-                    />
-                  );
-                }
-              })
-            ) : (
-              <CategoryBlock
-                categoryTitle={categoriesWithLinks[activeCategory].id}
-                links={categoriesWithLinks[activeCategory].urls}
-              />
-            )}
+            <MainContent />
           </div>
           <div className={styles.AddLinkWrapper}>
             <AddLinkButton />

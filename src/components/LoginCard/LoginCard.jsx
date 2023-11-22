@@ -5,10 +5,13 @@ import { auth } from "../../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import firestoreServices from "../../services/firestoreServices";
+import { useLoginContext } from "../../contexts/LoginContext";
+import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
   const navigator = useNavigate();
+  const { loginState, loginDispatch } = useLoginContext();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -26,8 +29,12 @@ export default function LoginCard() {
 
       if (userExists && userIsPaid) {
         console.log(result);
+        loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
         navigator("/home");
       } else {
+        loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
         navigator("/not-subscribed");
       }
     } catch (error) {

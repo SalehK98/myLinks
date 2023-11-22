@@ -6,7 +6,6 @@ function useForm(initialValue) {
   const handleChange = (event, isChecked, setIsChecked) => {
     const { name, type } = event.target;
     let { value } = event.target;
-    console.log();
     if (type === "checkbox") {
       setIsChecked({
         ...isChecked,

@@ -4,6 +4,7 @@ import { useUserDataContext } from "../../contexts/userDataContext";
 import firestoreServices from "../../services/firestoreServices";
 import { Tooltip } from "react-tooltip";
 import * as ActionTypes from "../../contexts/actionTypes";
+// import SearchBar from "../SearchBar/SearchBar";
 
 export default function CategoriesBox() {
   const [editing, setEditing] = useState(false);
@@ -62,6 +63,10 @@ export default function CategoriesBox() {
         type: ActionTypes.SET_ACTIVE_CATEGORY,
         payload: categoryToBeActive,
       });
+    userDataDispatch({
+      type: ActionTypes.SET_PREV_ACTIVE_CATEGORY,
+      payload: categoryToBeActive,
+    });
   };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
@@ -76,6 +81,7 @@ export default function CategoriesBox() {
         <h2>Categories</h2>
         <button onClick={toggleClass} className={buttonClass}></button>
       </div>
+
       <div className={styles.ulWrapper}>
         {editing && (
           <div className={styles.addCategoryContainer}>
@@ -99,6 +105,7 @@ export default function CategoriesBox() {
             />
           </div>
         )}
+        {/* {!editing && <SearchBar />} */}
         <ul>
           {!editing && (
             <li
