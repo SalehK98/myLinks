@@ -32,6 +32,11 @@ export default function CategoriesBox() {
   const handleDeleteCategory = async (categoryToDelete) => {
     try {
       await firestoreServices.deleteCategory(userEmail, categoryToDelete);
+      const tempArr = localCategories
+        .filter((el) => el !== categoryToDelete)
+        .sort();
+      userDataDispatch({ type: ActionTypes.SET_CATEGORIES, payload: tempArr });
+      setLocalCategories(tempArr);
     } catch (error) {
       console.error("sth went wrong", error.message);
     }
@@ -44,7 +49,7 @@ export default function CategoriesBox() {
           userDataState.user.email,
           newCategory
         );
-        setLocalCategories((prev) => [...prev, newCategory]);
+        setLocalCategories((prev) => [...prev, newCategory].sort());
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
@@ -59,14 +64,14 @@ export default function CategoriesBox() {
 
   const changeActiveCategory = (categoryToBeActive) => {
     !editing &&
+      // userDataDispatch({
+      //   type: ActionTypes.SET_ACTIVE_CATEGORY,
+      //   payload: categoryToBeActive,
+      // });
       userDataDispatch({
-        type: ActionTypes.SET_ACTIVE_CATEGORY,
+        type: ActionTypes.SET_PREV_ACTIVE_CATEGORY,
         payload: categoryToBeActive,
       });
-    userDataDispatch({
-      type: ActionTypes.SET_PREV_ACTIVE_CATEGORY,
-      payload: categoryToBeActive,
-    });
   };
 
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
@@ -113,7 +118,7 @@ export default function CategoriesBox() {
               id="showAll"
               onClick={() => changeActiveCategory("all")}
               className={
-                userDataState.activeCategory === "all"
+                userDataState.prevActiveCategory === "all"
                   ? styles.activeCategory
                   : ""
               }
@@ -122,12 +127,12 @@ export default function CategoriesBox() {
             </li>
           )}
 
-          {userDataState.categories.map((category, index) => (
+          {localCategories.map((category, index) => (
             <li
               key={index}
               onClick={() => changeActiveCategory(category)}
               className={
-                !editing && userDataState.activeCategory === category
+                !editing && userDataState.prevActiveCategory === category
                   ? styles.activeCategory
                   : ""
               }

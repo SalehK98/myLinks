@@ -50,7 +50,7 @@ function LinkCard({ link }) {
       </div>
       <a
         className={styles.linkUrl}
-        href={`https://${link.url}`}
+        href={link.url.includes("https") ? link.url : `https://${link.url}`}
         target="_blank"
       >
         <div className={styles.Wrapper}>
