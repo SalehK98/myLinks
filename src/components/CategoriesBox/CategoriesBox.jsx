@@ -17,6 +17,8 @@ export default function CategoriesBox() {
     ...userDataState.categories,
   ]);
 
+  const categoriesWithLinks = userDataState.categoriesWithLinks;
+
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
     setNewCategory("");
@@ -35,10 +37,19 @@ export default function CategoriesBox() {
       const tempArr = localCategories
         .filter((el) => el !== categoryToDelete)
         .sort();
+      delete categoriesWithLinks[categoryToDelete];
       userDataDispatch({ type: ActionTypes.SET_CATEGORIES, payload: tempArr });
+      userDataDispatch({
+        type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+        payload: categoriesWithLinks,
+      });
       setLocalCategories(tempArr);
     } catch (error) {
       console.error("sth went wrong", error.message);
+    } finally {
+      setTimeout(() => {
+        alert("category deleted successfully");
+      }, 100);
     }
   };
 
@@ -50,6 +61,18 @@ export default function CategoriesBox() {
           newCategory
         );
         setLocalCategories((prev) => [...prev, newCategory].sort());
+        categoriesWithLinks[newCategory] = { id: newCategory, urls: [] };
+        const sortedCategoriesWithLinks = {};
+        Object.entries(categoriesWithLinks)
+          .sort()
+          .forEach((arr) => {
+            sortedCategoriesWithLinks[arr[0]] = arr[1];
+          });
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: sortedCategoriesWithLinks,
+        });
+        console.log("categoriesWithLinks", categoriesWithLinks);
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
@@ -58,6 +81,9 @@ export default function CategoriesBox() {
         setTimeout(() => {
           setIsTooltipOpen(false);
         }, 1500);
+        setTimeout(() => {
+          alert("category added successfully");
+        }, 100);
       }
     }
   };

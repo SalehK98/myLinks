@@ -7,16 +7,29 @@ import * as ActionTypes from "../../contexts/actionTypes";
 
 function LinkCard({ link }) {
   const [isCopied, setIsCopied] = useState(false);
-  const { userDataState } = useUserDataContext();
+  const { userDataState, userDataDispatch } = useUserDataContext();
   const userEmail = userDataState.user.email;
 
   const { modalDispatch } = useModalContext();
 
   const handleDeleteLink = async () => {
+    const categoriesWithLinks = userDataState.categoriesWithLinks;
     try {
       await firestoreServices.deleteLink(userEmail, link);
+      const { categoryName, id } = link;
+      categoriesWithLinks[categoryName].urls = categoriesWithLinks[
+        categoryName
+      ].urls.filter((linkObj) => linkObj.id !== id);
+      userDataDispatch({
+        type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+        payload: categoriesWithLinks,
+      });
     } catch (error) {
       console.error("failed to delete", error.message);
+    } finally {
+      setTimeout(() => {
+        alert("link deleted successfully");
+      }, 100);
     }
   };
 
@@ -31,7 +44,6 @@ function LinkCard({ link }) {
       setIsCopied(true);
       try {
         await navigator.clipboard.writeText(newClipText);
-        console.log("text copied", newClipText);
       } catch (error) {
         console.error("copy failed", error.message);
       } finally {

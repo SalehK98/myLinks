@@ -10,7 +10,7 @@ import { useModalContext } from "../../contexts/ModalContext";
 import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function LinkEditorModalForm() {
-  const { userDataState } = useUserDataContext();
+  const { userDataState, userDataDispatch } = useUserDataContext();
   const { modalState, modalDispatch } = useModalContext();
   const userEmail = userDataState.user.email;
   const [isInputError, setIsInputError] = useState(InputErrorObj);
@@ -33,7 +33,6 @@ export default function LinkEditorModalForm() {
   const handleSave = async (event) => {
     event.preventDefault();
     const inputErrors = utilityServices.validateForm(values, inputs);
-    console.log(inputErrors);
     if (Object.keys(inputErrors).length > 0) {
       utilityServices.setFormErrors(
         inputErrors,
@@ -45,19 +44,48 @@ export default function LinkEditorModalForm() {
     }
     console.log("Form is valid:", values);
     const timeStampId = new Date().getTime().toString();
+    const categoriesWithLinks = userDataState.categoriesWithLinks;
 
     try {
-      modalState.modalMode === "add"
-        ? await firestoreServices.addNewLink(userEmail, timeStampId, values)
-        : await firestoreServices.updateLink(
-            userEmail,
-            modalState.currentLinkData,
-            values
-          );
+      if (modalState.modalMode === "add") {
+        await firestoreServices.addNewLink(userEmail, timeStampId, values);
+
+        categoriesWithLinks[values.categoryName].urls.push({
+          id: timeStampId,
+          categoryName: values.categoryName,
+          favorite: values.favorite,
+          private: values.private,
+          title: values.title,
+          url: values.url,
+        });
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: categoriesWithLinks,
+        });
+      } else {
+        await firestoreServices.updateLink(
+          userEmail,
+          modalState.currentLinkData,
+          values
+        );
+        const { categoryName, id } = values;
+        categoriesWithLinks[categoryName].urls = categoriesWithLinks[
+          categoryName
+        ].urls.map((linkObj) => (linkObj.id === id ? values : linkObj));
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: categoriesWithLinks,
+        });
+      }
       resetFrom();
     } catch (error) {
       console.error("sth went wrong", error.message);
     } finally {
+      setTimeout(() => {
+        modalState.modalMode === "add"
+          ? alert("link added successfully")
+          : alert("link edited successfully");
+      }, 100);
       closeModal(event);
     }
   };
