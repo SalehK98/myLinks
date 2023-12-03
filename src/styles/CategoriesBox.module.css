@@ -44,40 +44,33 @@
 .CategoriesBox .boxTitle .editButton {
   width: 2.5rem;
   height: 2.85rem;
-  background-image: url("../assets/icons/edit_FILL0_wght400_GRAD0_opsz24.svg");
   background-color: transparent;
   border: 0.063rem solid #ccc;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* .CategoriesBox .boxTitle .editButton::before {
-  width: 2.5rem;
-  height: 2.85rem;
-  content: "edit";
-} */
+.CategoriesBox .boxTitle .editButton img {
+  width: 1.1rem;
+  height: 1.1rem;
+}
 
 .CategoriesBox .boxTitle .doneButton {
   width: 2.5rem;
   height: 2.85rem;
-  background-image: url("../assets/icons/done_FILL0_wght400_GRAD0_opsz24.svg");
   background-color: transparent;
   border: 0.063rem solid #ccc;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-/* 
-.CategoriesBox .boxTitle .doneButton::before {
-  content: "Done";
-  width: 2.5rem;
-  height: 2.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.CategoriesBox .boxTitle .doneButton.loaded::before {
-  display: none;
-} */
+.CategoriesBox .boxTitle .doneButton img {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
 /* -------------------ul----------------------- */
 .ulWrapper {
   height: 80%;
@@ -138,16 +131,19 @@
 }
 
 .CategoriesBox li button {
-  /* background-color: #dc3545; */
   margin-right: 0.6rem;
-  background-image: url("../assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg");
   width: 1.5rem;
   height: 1.85rem;
   background-color: transparent;
-  background-size: 55%;
-  background-repeat: no-repeat;
-  background-position: center;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CategoriesBox li button img {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .activeCategory {

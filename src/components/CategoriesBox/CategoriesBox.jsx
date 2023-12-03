@@ -7,11 +7,13 @@ import * as ActionTypes from "../../contexts/actionTypes";
 import Overlay from "../Overlay/Overlay";
 import Loader from "../loader/Loader";
 // import SearchBar from "../SearchBar/SearchBar";
+import editIcon from "../../assets/icons/edit_FILL0_wght400_GRAD0_opsz24.svg";
+import doneIcon from "../../assets/icons/done_FILL0_wght400_GRAD0_opsz24.svg";
+import deleteIcon from "../../assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg";
 
 export default function CategoriesBox() {
   const [editing, setEditing] = useState(false);
   const [newCategory, setNewCategory] = useState("");
-  const [isEditModeButton, setIsEditModeButton] = useState(true);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const { userDataState, userDataDispatch } = useUserDataContext();
   const userEmail = userDataState.user.email;
@@ -24,7 +26,6 @@ export default function CategoriesBox() {
   const categoriesWithLinks = userDataState.categoriesWithLinks;
 
   const toggleClass = () => {
-    setIsEditModeButton(!isEditModeButton); // Toggle the state
     setNewCategory("");
     setEditing(!editing);
   };
@@ -130,7 +131,7 @@ export default function CategoriesBox() {
       });
   };
 
-  const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
+  const buttonClass = editing ? styles.doneButton : styles.editButton;
 
   useEffect(() => {
     console.log(localCategories);
@@ -140,7 +141,12 @@ export default function CategoriesBox() {
     <div className={styles.CategoriesBox}>
       <div className={styles.boxTitle}>
         <h2>Categories</h2>
-        <button onClick={toggleClass} className={buttonClass}></button>
+        <button onClick={toggleClass} className={buttonClass}>
+          <img
+            src={editing ? doneIcon : editIcon}
+            alt={editing ? "Done" : "Edit"}
+          />
+        </button>
       </div>
 
       <div className={styles.ulWrapper}>
@@ -205,7 +211,9 @@ export default function CategoriesBox() {
                     event.stopPropagation();
                     handleDeleteCategory(category);
                   }}
-                ></button>
+                >
+                  {editing && <img src={deleteIcon} alt="Delete" />}
+                </button>
               )}
             </li>
           ))}
