@@ -61,41 +61,48 @@ function LinkCard({ link }) {
     }
   };
   return (
-    <div className={styles.linkCard}>
-      {isDeleting && (
-        <Overlay>
-          <Loader />
-        </Overlay>
-      )}
-      <div className={styles.Wrapper}>
-        <h2 className={styles.linkTitle}>{link.title} </h2>
-      </div>
-      <a
-        className={styles.linkUrl}
-        href={link.url.includes("https") ? link.url : `https://${link.url}`}
-        target="_blank"
-      >
-        <div className={styles.Wrapper}>
-          <p>{link.url}</p>
+    <>
+      <div className={styles.linkCard}>
+        {isDeleting && (
+          <Overlay
+            overlayStyleClass="linkCardOverlay"
+            overlayComponent="linkCard"
+          >
+            <Loader />
+          </Overlay>
+        )}
+        <div style={{ padding: "1rem" }}>
+          <div className={styles.Wrapper}>
+            <h2 className={styles.linkTitle}>{link.title} </h2>
+          </div>
+          <a
+            className={styles.linkUrl}
+            href={link.url.includes("https") ? link.url : `https://${link.url}`}
+            target="_blank"
+          >
+            <div className={styles.Wrapper}>
+              <p>{link.url}</p>
+            </div>
+          </a>
+          <div className={styles.linkActions}>
+            <button className={styles.linkButton} onClick={handleEditLink}>
+              Edit
+            </button>
+            <span className={styles.linkSeparator}></span>
+            <button
+              className={styles.linkButton}
+              onClick={() => handleCopyLink(link.url)}
+            >
+              {isCopied ? "Copied" : "Copy"}
+            </button>
+            <span className={styles.linkSeparator}></span>
+            <button className={styles.linkButton} onClick={handleDeleteLink}>
+              Delete
+            </button>
+          </div>
         </div>
-      </a>
-      <div className={styles.linkActions}>
-        <button className={styles.linkButton} onClick={handleEditLink}>
-          Edit
-        </button>
-        <span className={styles.linkSeparator}></span>
-        <button
-          className={styles.linkButton}
-          onClick={() => handleCopyLink(link.url)}
-        >
-          {isCopied ? "Copied" : "Copy"}
-        </button>
-        <span className={styles.linkSeparator}></span>
-        <button className={styles.linkButton} onClick={handleDeleteLink}>
-          Delete
-        </button>
       </div>
-    </div>
+    </>
   );
 }
 

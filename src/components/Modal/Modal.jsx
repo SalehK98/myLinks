@@ -11,7 +11,6 @@ export default function Modal() {
   console.log("isOpen", modalState.isModalOpen);
   console.log("modalMode", modalState.modalMode);
   const [isOperationLoading, setIsOperationLoading] = useState(false);
-  // const [keyProp, setKeyProp] = useState(0);
 
   useEffect(() => {
     const handleEscapeKey = (event) => {
@@ -24,7 +23,6 @@ export default function Modal() {
     if (modalState.isModalOpen) {
       document.body.style.overflow = "hidden";
       document.addEventListener("keydown", handleEscapeKey);
-      // setKeyProp((prevKeyProp) => prevKeyProp + 1);
     }
 
     return () => {
@@ -36,11 +34,13 @@ export default function Modal() {
   if (!modalState.isModalOpen) return <></>;
   return createPortal(
     <>
-      <Overlay>
+      <Overlay
+        overlayStyleClass="fullscreenOverlay"
+        overlayComponent="fullscreen"
+      >
         <LinkEditorModalForm
           isOperationLoading={isOperationLoading}
           setIsOperationLoading={setIsOperationLoading}
-          // keyProp={keyProp}
         />
       </Overlay>
     </>,

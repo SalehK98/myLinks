@@ -1,0 +1,49 @@
+/* the CSS rules will decide what will the overlay cover based on it's name */
+
+.fullscreenOverlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  position: fixed;
+  height: 100%;
+}
+
+.fullModalOverlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  position: absolute;
+  height: 90%;
+  width: 96%;
+  border-radius: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.linkCardOverlay {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* z-index: 1000; */
+  height: 18.5%;
+  width: 21.1%;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+  align-items: center;
+}
+
+.categoriesBoxOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  position: absolute;
+  height: 55%;
+  width: 87%;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

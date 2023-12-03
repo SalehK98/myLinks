@@ -151,7 +151,10 @@ export default function CategoriesBox() {
 
       <div className={styles.ulWrapper}>
         {isOperation && (
-          <Overlay>
+          <Overlay
+            overlayStyleClass="categoriesBoxOverlay"
+            overlayComponent="categoriesBox"
+          >
             <Loader />
           </Overlay>
         )}

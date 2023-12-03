@@ -37,6 +37,8 @@ export default function LinkEditorModalForm({
 
   const handleSave = async (event) => {
     event.preventDefault();
+    if (isOperationLoading) return;
+    console.log("entered here");
     const inputErrors = utilityServices.validateForm(values, inputs);
     if (Object.keys(inputErrors).length > 0) {
       utilityServices.setFormErrors(
@@ -119,9 +121,14 @@ export default function LinkEditorModalForm({
       }}
     >
       {isOperationLoading && (
-        <OverLay>
-          <Loader />
-        </OverLay>
+        <div>
+          <OverLay
+            overlayStyleClass="fullModalOverlay"
+            overlayComponent="modal"
+          >
+            <Loader />
+          </OverLay>
+        </div>
       )}
       {/* Apply the container style */}
       {inputs.map((input) => (
@@ -205,6 +212,7 @@ export default function LinkEditorModalForm({
           className={styles.cancelButton}
           onClick={(event) => {
             event.preventDefault();
+            if (isOperationLoading) return;
             closeModal();
           }}
         >
