@@ -11,7 +11,7 @@ export default function MainContent() {
   const searchResult = searchState.searchResult;
 
   useEffect(() => {
-    console.log("accessed main");
+    console.log("accessed main content");
   }, [categoriesWithLinks]);
 
   switch (activeCategory) {

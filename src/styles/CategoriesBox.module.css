@@ -52,6 +52,12 @@
   background-position: center;
 }
 
+/* .CategoriesBox .boxTitle .editButton::before {
+  width: 2.5rem;
+  height: 2.85rem;
+  content: "edit";
+} */
+
 .CategoriesBox .boxTitle .doneButton {
   width: 2.5rem;
   height: 2.85rem;
@@ -62,6 +68,16 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+/* 
+.CategoriesBox .boxTitle .doneButton::before {
+  content: "Done";
+  width: 2.5rem;
+  height: 2.85rem;
+}
+
+.CategoriesBox .boxTitle .doneButton.loaded::before {
+  display: none;
+} */
 /* -------------------ul----------------------- */
 .ulWrapper {
   height: 80%;

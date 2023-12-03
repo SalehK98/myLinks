@@ -4,6 +4,8 @@ import { useUserDataContext } from "../../contexts/userDataContext";
 import firestoreServices from "../../services/firestoreServices";
 import { Tooltip } from "react-tooltip";
 import * as ActionTypes from "../../contexts/actionTypes";
+import Overlay from "../Overlay/Overlay";
+import Loader from "../loader/Loader";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function CategoriesBox() {
@@ -17,36 +19,56 @@ export default function CategoriesBox() {
     ...userDataState.categories,
   ]);
 
+  const [isOperation, setIsOperation] = useState(false);
+
   const categoriesWithLinks = userDataState.categoriesWithLinks;
 
   const toggleClass = () => {
     setIsEditModeButton(!isEditModeButton); // Toggle the state
     setNewCategory("");
     setEditing(!editing);
-    // editing
-    //   ? userDataDispatch({
-    //       type: ActionTypes.SET_CHANGE,
-    //       payload: userDataState.change + 1,
-    //     })
-    //   : "";
   };
 
+  useEffect(() => {
+    let timeout;
+
+    const startLoading = () => {
+      timeout = setTimeout(() => {
+        setIsOperation(false);
+      }, 500); // Set your desired delay here (in milliseconds)
+    };
+
+    // Trigger the asynchronous operation
+    startLoading();
+
+    // Cleanup function to clear the timeout
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
   const handleDeleteCategory = async (categoryToDelete) => {
+    setIsOperation(true);
+    // setShowOverlay(true);
+
     try {
       await firestoreServices.deleteCategory(userEmail, categoryToDelete);
       const tempArr = localCategories
         .filter((el) => el !== categoryToDelete)
         .sort();
+      setLocalCategories(tempArr);
       delete categoriesWithLinks[categoryToDelete];
+
       userDataDispatch({ type: ActionTypes.SET_CATEGORIES, payload: tempArr });
       userDataDispatch({
         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
         payload: categoriesWithLinks,
       });
-      setLocalCategories(tempArr);
     } catch (error) {
       console.error("sth went wrong", error.message);
     } finally {
+      setIsOperation(false);
+      setShowOverlay(false);
       setTimeout(() => {
         alert("category deleted successfully");
       }, 100);
@@ -55,12 +77,14 @@ export default function CategoriesBox() {
 
   const handleAddCategory = async () => {
     if (newCategory.trim() !== "") {
+      setIsOperation(true);
       try {
         await firestoreServices.addNewCategory(
           userDataState.user.email,
           newCategory
         );
-        setLocalCategories((prev) => [...prev, newCategory].sort());
+        const tempArr = [...localCategories, newCategory].sort();
+        setLocalCategories(tempArr);
         categoriesWithLinks[newCategory] = { id: newCategory, urls: [] };
         const sortedCategoriesWithLinks = {};
         Object.entries(categoriesWithLinks)
@@ -72,11 +96,21 @@ export default function CategoriesBox() {
           type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
           payload: sortedCategoriesWithLinks,
         });
-        console.log("categoriesWithLinks", categoriesWithLinks);
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES,
+          payload: tempArr,
+        });
+        console.log(
+          "categoriesWithLinks",
+          categoriesWithLinks,
+          localCategories
+        );
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
       } finally {
+        setIsOperation(false);
+        setShowOverlay(false);
         setNewCategory("");
         setTimeout(() => {
           setIsTooltipOpen(false);
@@ -90,10 +124,6 @@ export default function CategoriesBox() {
 
   const changeActiveCategory = (categoryToBeActive) => {
     !editing &&
-      // userDataDispatch({
-      //   type: ActionTypes.SET_ACTIVE_CATEGORY,
-      //   payload: categoryToBeActive,
-      // });
       userDataDispatch({
         type: ActionTypes.SET_PREV_ACTIVE_CATEGORY,
         payload: categoryToBeActive,
@@ -114,6 +144,11 @@ export default function CategoriesBox() {
       </div>
 
       <div className={styles.ulWrapper}>
+        {isOperation && (
+          <Overlay>
+            <Loader />
+          </Overlay>
+        )}
         {editing && (
           <div className={styles.addCategoryContainer}>
             <input

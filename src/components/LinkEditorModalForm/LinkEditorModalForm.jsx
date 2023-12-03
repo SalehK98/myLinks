@@ -8,8 +8,13 @@ import { Tooltip } from "react-tooltip";
 import { useState, useEffect } from "react";
 import { useModalContext } from "../../contexts/ModalContext";
 import * as ActionTypes from "../../contexts/actionTypes";
+import OverLay from "../Overlay/Overlay";
+import Loader from "../loader/Loader";
 
-export default function LinkEditorModalForm() {
+export default function LinkEditorModalForm({
+  isOperationLoading,
+  setIsOperationLoading,
+}) {
   const { userDataState, userDataDispatch } = useUserDataContext();
   const { modalState, modalDispatch } = useModalContext();
   const userEmail = userDataState.user.email;
@@ -47,6 +52,7 @@ export default function LinkEditorModalForm() {
     const categoriesWithLinks = userDataState.categoriesWithLinks;
 
     try {
+      setIsOperationLoading(true);
       if (modalState.modalMode === "add") {
         await firestoreServices.addNewLink(userEmail, timeStampId, values);
 
@@ -69,9 +75,23 @@ export default function LinkEditorModalForm() {
           values
         );
         const { categoryName, id } = values;
+        const oldCategory = modalState.currentLinkData.categoryName;
+
+        if (categoryName !== oldCategory) {
+          // Remove the link from the old category
+          categoriesWithLinks[oldCategory].urls = categoriesWithLinks[
+            oldCategory
+          ].urls.filter((linkObj) => linkObj.id !== id);
+
+          // Add the link to the new category
+          categoriesWithLinks[categoryName].urls.push(values);
+        }
+
+        // Update the link in the current category
         categoriesWithLinks[categoryName].urls = categoriesWithLinks[
           categoryName
         ].urls.map((linkObj) => (linkObj.id === id ? values : linkObj));
+
         userDataDispatch({
           type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
           payload: categoriesWithLinks,
@@ -86,6 +106,7 @@ export default function LinkEditorModalForm() {
           ? alert("link added successfully")
           : alert("link edited successfully");
       }, 100);
+      setIsOperationLoading(false);
       closeModal(event);
     }
   };
@@ -97,6 +118,11 @@ export default function LinkEditorModalForm() {
         event.stopPropagation();
       }}
     >
+      {isOperationLoading && (
+        <OverLay>
+          <Loader />
+        </OverLay>
+      )}
       {/* Apply the container style */}
       {inputs.map((input) => (
         <div key={input.name} className={styles.formField}>

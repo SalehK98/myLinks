@@ -1,23 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import LinkEditorModalForm from "../LinkEditorModalForm/LinkEditorModalForm";
 import { useModalContext } from "../../contexts/ModalContext";
 import * as ActionTypes from "../../contexts/actionTypes";
-const overlay = {
-  backgroundColor: "rgba(0,0,0,0.7)",
-  top: "0",
-  bottom: "0",
-  left: "0",
-  right: "0",
-  zIndex: "1000",
-  position: "fixed",
-};
+import Overlay from "../Overlay/Overlay";
 
 export default function Modal() {
   const { modalState, modalDispatch } = useModalContext();
   // const ModalName = LinkEditorModalForm
   console.log("isOpen", modalState.isModalOpen);
   console.log("modalMode", modalState.modalMode);
+  const [isOperationLoading, setIsOperationLoading] = useState(false);
+  // const [keyProp, setKeyProp] = useState(0);
 
   useEffect(() => {
     const handleEscapeKey = (event) => {
@@ -30,6 +24,7 @@ export default function Modal() {
     if (modalState.isModalOpen) {
       document.body.style.overflow = "hidden";
       document.addEventListener("keydown", handleEscapeKey);
+      // setKeyProp((prevKeyProp) => prevKeyProp + 1);
     }
 
     return () => {
@@ -41,19 +36,13 @@ export default function Modal() {
   if (!modalState.isModalOpen) return <></>;
   return createPortal(
     <>
-      <div
-        className="overlay"
-        style={overlay}
-        onClick={() => {
-          modalDispatch({
-            type: ActionTypes.SET_IS_MODAL_OPEN,
-            payload: false,
-          });
-          document.body.style.overflow = "auto";
-        }}
-      >
-        <LinkEditorModalForm />
-      </div>
+      <Overlay>
+        <LinkEditorModalForm
+          isOperationLoading={isOperationLoading}
+          setIsOperationLoading={setIsOperationLoading}
+          // keyProp={keyProp}
+        />
+      </Overlay>
     </>,
     document.getElementById("portal-root")
   );

@@ -4,17 +4,21 @@ import { useUserDataContext } from "../../contexts/userDataContext";
 import { useState } from "react";
 import { useModalContext } from "../../contexts/ModalContext";
 import * as ActionTypes from "../../contexts/actionTypes";
+import Overlay from "../Overlay/Overlay";
+import Loader from "../loader/Loader";
 
 function LinkCard({ link }) {
   const [isCopied, setIsCopied] = useState(false);
   const { userDataState, userDataDispatch } = useUserDataContext();
   const userEmail = userDataState.user.email;
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { modalDispatch } = useModalContext();
 
   const handleDeleteLink = async () => {
     const categoriesWithLinks = userDataState.categoriesWithLinks;
     try {
+      setIsDeleting(true);
       await firestoreServices.deleteLink(userEmail, link);
       const { categoryName, id } = link;
       categoriesWithLinks[categoryName].urls = categoriesWithLinks[
@@ -27,6 +31,7 @@ function LinkCard({ link }) {
     } catch (error) {
       console.error("failed to delete", error.message);
     } finally {
+      setIsDeleting(false);
       setTimeout(() => {
         alert("link deleted successfully");
       }, 100);
@@ -57,6 +62,11 @@ function LinkCard({ link }) {
   };
   return (
     <div className={styles.linkCard}>
+      {isDeleting && (
+        <Overlay>
+          <Loader />
+        </Overlay>
+      )}
       <div className={styles.Wrapper}>
         <h2 className={styles.linkTitle}>{link.title} </h2>
       </div>
