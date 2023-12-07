@@ -8,6 +8,7 @@ import transformAllUserData from "../../helpers/transformFirestoreData";
 import styles from "../../styles/HomePage.module.css";
 import * as ActionTypes from "../../contexts/actionTypes";
 import { useUserDataContext } from "../../contexts/userDataContext";
+import Loader from "../../components/loader/Loader";
 import MainContent from "../../components/MainContent/MainContent";
 
 export default function HomePage() {
@@ -66,7 +67,12 @@ export default function HomePage() {
     fetchCollectionData();
   }, [userDataState.change]);
 
-  if (isLoading) return <>Loading</>;
+  if (isLoading)
+    return (
+      <div className={styles.loaderWrapper}>
+        <Loader />
+      </div>
+    );
   if (error) return <>error: {error.message}</>;
 
   if (userDataState.user) {

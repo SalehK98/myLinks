@@ -1,7 +1,7 @@
 import styles from "../../styles/SearchBar.module.css";
 import { IconContext } from "react-icons";
 import { BsSearch } from "react-icons/bs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserDataContext } from "../../contexts/userDataContext";
 import { useSearchContext } from "../../contexts/SearchContext";
 import * as ActionTypes from "../../contexts/actionTypes";
@@ -14,6 +14,11 @@ export default function SearchBar() {
   const { userDataState, userDataDispatch } = useUserDataContext();
   const categoriesWithLinks = userDataState.categoriesWithLinks;
   const prevActiveCategory = userDataState.prevActiveCategory;
+
+  useEffect(() => {
+    handleSearch(searchTerm);
+    console.log("accessed search ");
+  }, [prevActiveCategory]);
 
   const handleSearch = (searchTerm) => {
     if (searchTerm === "") {

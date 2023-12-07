@@ -22,14 +22,14 @@
 
 /* Form field styles */
 .formField {
-  min-width: 98%;
+  width: 98%;
   margin: 0.5rem auto;
   border-radius: 0.25rem;
   border: none;
 
-  /* display: flex;
-  align-items: center;
-  justify-content: space-between; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: space-between; */
 }
 
 /* .formField input: */

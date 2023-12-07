@@ -1,6 +1,7 @@
 import { useSearchContext } from "../../contexts/SearchContext";
 import { useUserDataContext } from "../../contexts/userDataContext";
 import CategoryBlock from "../CategoryBlock/CategoryBlock";
+import { useEffect } from "react";
 
 export default function MainContent() {
   const { userDataState } = useUserDataContext();
@@ -8,7 +9,10 @@ export default function MainContent() {
   const activeCategory = userDataState.activeCategory;
   const categoriesWithLinks = userDataState.categoriesWithLinks;
   const searchResult = searchState.searchResult;
-  console.log("hghjhkj", searchResult);
+
+  useEffect(() => {
+    console.log("accessed main content");
+  }, [categoriesWithLinks]);
 
   switch (activeCategory) {
     case "all":

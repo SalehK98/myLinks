@@ -1,7 +1,7 @@
 import "./App.css";
 // import { lazy, Suspense } from "react";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
-import Playground from "./components/Playground";
+// import Playground from "./components/Playground";
 import HomePage from "./views/Home/HomePage";
 import LoginPage from "./views/Login/LoginPage";
 import NotSubscribedPage from "./views/NotSubscribed/NotSubscribedPage";
@@ -51,11 +51,11 @@ function App() {
       element: <LinkEditorModalForm />,
       errorElement: <>Error...</>,
     },
-    {
-      path: "/firebase",
-      element: <Playground />,
-      errorElement: <>Error...</>,
-    },
+    // {
+    //   path: "/firebase",
+    //   element: <Playground />,
+    //   errorElement: <>Error...</>,
+    // },
     { errorElement: <>Error...</> },
   ]);
   return (

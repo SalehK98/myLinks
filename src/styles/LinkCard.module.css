@@ -1,13 +1,14 @@
 /* LinkCard.module.css */
 .linkCard {
   border: 0.0625rem solid #ccc;
-  padding: 1rem;
+  /* padding: 1rem; */
   border-radius: 0.2rem;
   margin: 0 1rem 1rem 1rem;
   width: 18rem; /* Adjust the width as needed */
   height: 8rem;
   overflow: hidden; /* Hide overflowing content */
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2); /* Add a subtle shadow to the card */
+  /* position: relative; */
 }
 
 .Wrapper {

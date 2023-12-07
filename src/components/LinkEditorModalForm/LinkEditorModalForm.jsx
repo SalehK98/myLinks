@@ -8,9 +8,14 @@ import { Tooltip } from "react-tooltip";
 import { useState, useEffect } from "react";
 import { useModalContext } from "../../contexts/ModalContext";
 import * as ActionTypes from "../../contexts/actionTypes";
+import OverLay from "../Overlay/Overlay";
+import Loader from "../loader/Loader";
 
-export default function LinkEditorModalForm() {
-  const { userDataState } = useUserDataContext();
+export default function LinkEditorModalForm({
+  isOperationLoading,
+  setIsOperationLoading,
+}) {
+  const { userDataState, userDataDispatch } = useUserDataContext();
   const { modalState, modalDispatch } = useModalContext();
   const userEmail = userDataState.user.email;
   const [isInputError, setIsInputError] = useState(InputErrorObj);
@@ -32,8 +37,9 @@ export default function LinkEditorModalForm() {
 
   const handleSave = async (event) => {
     event.preventDefault();
+    if (isOperationLoading) return;
+    console.log("entered here");
     const inputErrors = utilityServices.validateForm(values, inputs);
-    console.log(inputErrors);
     if (Object.keys(inputErrors).length > 0) {
       utilityServices.setFormErrors(
         inputErrors,
@@ -45,19 +51,64 @@ export default function LinkEditorModalForm() {
     }
     console.log("Form is valid:", values);
     const timeStampId = new Date().getTime().toString();
+    const categoriesWithLinks = userDataState.categoriesWithLinks;
 
     try {
-      modalState.modalMode === "add"
-        ? await firestoreServices.addNewLink(userEmail, timeStampId, values)
-        : await firestoreServices.updateLink(
-            userEmail,
-            modalState.currentLinkData,
-            values
-          );
+      setIsOperationLoading(true);
+      if (modalState.modalMode === "add") {
+        await firestoreServices.addNewLink(userEmail, timeStampId, values);
+
+        categoriesWithLinks[values.categoryName].urls.push({
+          id: timeStampId,
+          categoryName: values.categoryName,
+          favorite: values.favorite,
+          private: values.private,
+          title: values.title,
+          url: values.url,
+        });
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: categoriesWithLinks,
+        });
+      } else {
+        await firestoreServices.updateLink(
+          userEmail,
+          modalState.currentLinkData,
+          values
+        );
+        const { categoryName, id } = values;
+        const oldCategory = modalState.currentLinkData.categoryName;
+
+        if (categoryName !== oldCategory) {
+          // Remove the link from the old category
+          categoriesWithLinks[oldCategory].urls = categoriesWithLinks[
+            oldCategory
+          ].urls.filter((linkObj) => linkObj.id !== id);
+
+          // Add the link to the new category
+          categoriesWithLinks[categoryName].urls.push(values);
+        }
+
+        // Update the link in the current category
+        categoriesWithLinks[categoryName].urls = categoriesWithLinks[
+          categoryName
+        ].urls.map((linkObj) => (linkObj.id === id ? values : linkObj));
+
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: categoriesWithLinks,
+        });
+      }
       resetFrom();
     } catch (error) {
       console.error("sth went wrong", error.message);
     } finally {
+      setTimeout(() => {
+        modalState.modalMode === "add"
+          ? alert("link added successfully")
+          : alert("link edited successfully");
+      }, 100);
+      setIsOperationLoading(false);
       closeModal(event);
     }
   };
@@ -69,6 +120,11 @@ export default function LinkEditorModalForm() {
         event.stopPropagation();
       }}
     >
+      {isOperationLoading && (
+        <OverLay overlayStyleClass="fullModalOverlay" overlayComponent="modal">
+          <Loader />
+        </OverLay>
+      )}
       {/* Apply the container style */}
       {inputs.map((input) => (
         <div key={input.name} className={styles.formField}>
@@ -151,6 +207,7 @@ export default function LinkEditorModalForm() {
           className={styles.cancelButton}
           onClick={(event) => {
             event.preventDefault();
+            if (isOperationLoading) return;
             closeModal();
           }}
         >
