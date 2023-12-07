@@ -28,13 +28,13 @@ function LinkCard({ link }) {
         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
         payload: categoriesWithLinks,
       });
+      setTimeout(() => {
+        alert("link deleted successfully");
+      }, 100);
     } catch (error) {
       console.error("failed to delete", error.message);
     } finally {
       setIsDeleting(false);
-      setTimeout(() => {
-        alert("link deleted successfully");
-      }, 100);
     }
   };
 
@@ -77,7 +77,9 @@ function LinkCard({ link }) {
           </div>
           <a
             className={styles.linkUrl}
-            href={link.url.includes("https") ? link.url : `https://${link.url}`}
+            href={
+              link.url.startsWith("http") ? link.url : `https://${link.url}`
+            }
             target="_blank"
           >
             <div className={styles.Wrapper}>

@@ -121,14 +121,9 @@ export default function LinkEditorModalForm({
       }}
     >
       {isOperationLoading && (
-        <div>
-          <OverLay
-            overlayStyleClass="fullModalOverlay"
-            overlayComponent="modal"
-          >
-            <Loader />
-          </OverLay>
-        </div>
+        <OverLay overlayStyleClass="fullModalOverlay" overlayComponent="modal">
+          <Loader />
+        </OverLay>
       )}
       {/* Apply the container style */}
       {inputs.map((input) => (

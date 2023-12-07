@@ -50,7 +50,6 @@ export default function CategoriesBox() {
 
   const handleDeleteCategory = async (categoryToDelete) => {
     setIsOperation(true);
-    // setShowOverlay(true);
 
     try {
       await firestoreServices.deleteCategory(userEmail, categoryToDelete);
@@ -69,7 +68,6 @@ export default function CategoriesBox() {
       console.error("sth went wrong", error.message);
     } finally {
       setIsOperation(false);
-      setShowOverlay(false);
       setTimeout(() => {
         alert("category deleted successfully");
       }, 100);
@@ -101,24 +99,19 @@ export default function CategoriesBox() {
           type: ActionTypes.SET_CATEGORIES,
           payload: tempArr,
         });
-        console.log(
-          "categoriesWithLinks",
-          categoriesWithLinks,
-          localCategories
-        );
       } catch (error) {
         // console.error("Error adding a new category:", error);
         setIsTooltipOpen(true);
       } finally {
         setIsOperation(false);
-        setShowOverlay(false);
-        setNewCategory("");
+
         setTimeout(() => {
           setIsTooltipOpen(false);
         }, 1500);
         setTimeout(() => {
           alert("category added successfully");
         }, 100);
+        setNewCategory("");
       }
     }
   };
@@ -148,16 +141,17 @@ export default function CategoriesBox() {
           />
         </button>
       </div>
-
-      <div className={styles.ulWrapper}>
-        {isOperation && (
+      {isOperation && (
+        <div className={styles.overlayWrapper}>
           <Overlay
             overlayStyleClass="categoriesBoxOverlay"
             overlayComponent="categoriesBox"
           >
             <Loader />
           </Overlay>
-        )}
+        </div>
+      )}
+      <div className={styles.ulWrapper}>
         {editing && (
           <div className={styles.addCategoryContainer}>
             <input

@@ -67,7 +67,12 @@ export default function HomePage() {
     fetchCollectionData();
   }, [userDataState.change]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className={styles.loaderWrapper}>
+        <Loader />
+      </div>
+    );
   if (error) return <>error: {error.message}</>;
 
   if (userDataState.user) {

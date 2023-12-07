@@ -12,11 +12,12 @@
 }
 
 .fullModalOverlay {
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
   position: absolute;
-  height: 90%;
-  width: 96%;
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  z-index: 1000;
+  height: 100%;
+  width: 96.5%;
+  overflow: hidden;
   border-radius: 0.75rem;
   display: flex;
   justify-content: center;
@@ -26,9 +27,9 @@
 .linkCardOverlay {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.7);
-  /* z-index: 1000; */
-  height: 18.5%;
-  width: 21.1%;
+  z-index: 1000;
+  height: 8rem;
+  width: 17.9rem;
   border-radius: 0.2rem;
   display: flex;
   justify-content: center;
@@ -40,8 +41,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   position: absolute;
-  height: 55%;
-  width: 87%;
+  height: 61%;
+  width: 96%;
   border-radius: 0.2rem;
   display: flex;
   justify-content: center;
