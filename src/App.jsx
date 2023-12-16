@@ -1,7 +1,7 @@
 import "./App.css";
 // import { lazy, Suspense } from "react";
 import LinkEditorModalForm from "./components/LinkEditorModalForm/LinkEditorModalForm";
-import Playground from "./components/Playground";
+// import Playground from "./components/Playground";
 import HomePage from "./views/Home/HomePage";
 import LoginPage from "./views/Login/LoginPage";
 import NotSubscribedPage from "./views/NotSubscribed/NotSubscribedPage";
@@ -16,12 +16,13 @@ function App() {
   const { loginState } = useLoginContext();
   const WrappedHomeComponent = withAccessControl(HomePage);
   const WrappedNotSubscribedComponent = withAccessControl(NotSubscribedPage);
+  const WrappedLoginComponent = withAccessControl(LoginPage);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <LoginPage />,
-      errorElement: <>Error...</>,
+      element: <WrappedLoginComponent />,
+      errorElement: <>Error...sus4</>,
     },
     {
       path: "/home",
@@ -44,19 +45,19 @@ function App() {
     {
       path: "/not-subscribed",
       element: <WrappedNotSubscribedComponent />,
-      errorElement: <>Error...</>,
+      errorElement: <>Error... sus2</>,
     },
     {
       path: "/modal",
       element: <LinkEditorModalForm />,
-      errorElement: <>Error...</>,
+      errorElement: <>Error... sus1</>,
     },
-    {
-      path: "/firebase",
-      element: <Playground />,
-      errorElement: <>Error...</>,
-    },
-    { errorElement: <>Error...</> },
+    // {
+    //   path: "/firebase",
+    //   element: <Playground />,
+    //   errorElement: <>Error...</>,
+    // },
+    { errorElement: <>Error... sus</> },
   ]);
   return (
     <>

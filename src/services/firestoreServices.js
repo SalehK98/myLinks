@@ -9,6 +9,7 @@ import {
   arrayRemove,
   arrayUnion,
   writeBatch,
+  onSnapshot,
 } from "firebase/firestore";
 import { firestoreDb } from "../firebase/firebaseConfig";
 import {
@@ -215,6 +216,17 @@ export const deleteCategory = async (email, categoryName) => {
   }
 };
 
+export const subscribeToRealtimeUpdates = async () => {
+  console.log("subscribeToRealtimeUpdates() -> called.");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
+  const unsubscribe = onSnapshot(userDocRef, (userDocSnapshot) => {
+    console.log("currentData", userDocSnapshot.data());
+  });
+  return unsubscribe;
+};
+
+const unsubscribe = await subscribeToRealtimeUpdates();
+
 export default {
   checkUserExists,
   checkIfUserPaid,
@@ -224,4 +236,5 @@ export default {
   addNewLink,
   updateLink,
   deleteLink,
+  subscribeToRealtimeUpdates,
 };
