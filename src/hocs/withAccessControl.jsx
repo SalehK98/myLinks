@@ -1,25 +1,47 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useLoginContext } from "../contexts/LoginContext";
+import firestoreServices from "../services/firestoreServices";
+import { useUserDataContext } from "../contexts/userDataContext";
 
 const withAccessControl = (WrappedComponent) => {
   const ControlledComponent = (props) => {
     const { loginState } = useLoginContext();
     const { isLogged, isPaid } = loginState;
+    const { userDataState } = useUserDataContext();
+    // const userEmail = ;
+
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
     useEffect(() => {
       setLoading(true);
+      let userUnsubscribe; // Declare the variable outside the conditions
+
       if (!isLogged) {
         navigate("/");
-      } else if (!isPaid && WrappedComponent.name === "NotSubscribedPage") {
-        navigate("/not-subscribed");
-      } else if (isPaid) {
-        navigate("/home");
+      } else {
+        console.log(userDataState.user);
+        // Subscribe to user updates
+        // userUnsubscribe = firestoreServices.subscribeToUserDocumentUpdates(
+        //   userDataState.user.email,
+        //   navigate
+        // );
+
+        // Check conditions and navigate accordingly
+        if (isPaid) {
+          navigate("/home");
+        } else if (WrappedComponent.name === "NotSubscribedPage") {
+          navigate("/not-subscribed");
+        }
       }
       setLoading(false);
+
+      // Clean up the subscription when the component unmounts
+      return () => {
+        if (userUnsubscribe) userUnsubscribe();
+      };
     }, [isLogged, isPaid, WrappedComponent.name, navigate]);
 
     if (!isLogged && WrappedComponent.name === "LoginPage") {

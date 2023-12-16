@@ -27,18 +27,18 @@ function App() {
     {
       path: "/home",
       element: (
-        <UserDataProvider>
-          <ModalProvider>
-            {/* {loginState.isLogged && ( */}
-            {/* <Suspense fallback={<>Loading...</>}> */}
-            <SearchProvider>
-              <WrappedHomeComponent />
-            </SearchProvider>
-            {/* <HomePage /> */}
-            {/* </Suspense> */}
-            {/* )} */}
-          </ModalProvider>
-        </UserDataProvider>
+        // <UserDataProvider>
+        <ModalProvider>
+          {/* {loginState.isLogged && ( */}
+          {/* <Suspense fallback={<>Loading...</>}> */}
+          <SearchProvider>
+            <WrappedHomeComponent />
+          </SearchProvider>
+          {/* <HomePage /> */}
+          {/* </Suspense> */}
+          {/* )} */}
+        </ModalProvider>
+        // </UserDataProvider>
       ),
       errorElement: <>Error...</>,
     },

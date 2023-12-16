@@ -10,7 +10,7 @@ import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const { loginState, loginDispatch } = useLoginContext();
 
   const handleGoogleSignIn = async () => {
@@ -31,11 +31,11 @@ export default function LoginCard() {
         console.log(result);
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
-        navigator("/home");
+        navigate("/home");
       } else {
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
-        navigator("/not-subscribed");
+        navigate("/not-subscribed");
       }
     } catch (error) {
       // Handle sign-in errors
@@ -45,11 +45,11 @@ export default function LoginCard() {
       const errorCode = error.code;
       if (errorCode === "auth/cancelled-popup-request") {
         // Handle user cancelling the sign-in
-        navigator("/");
+        navigate("/");
       } else if (errorCode === "auth/popup-closed-by-user") {
         // Handle other errors
         console.error(error.code, error.message);
-        navigator("/");
+        navigate("/");
       } else {
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.log("error", credential, error.message, error.code);

@@ -216,16 +216,47 @@ export const deleteCategory = async (email, categoryName) => {
   }
 };
 
-export const subscribeToRealtimeUpdates = async () => {
-  console.log("subscribeToRealtimeUpdates() -> called.");
+export const subscribeToUserDocumentUpdates = (email, callback) => {
+  console.log("subscribeToUserDocumentUpdates() -> called.");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
-  const unsubscribe = onSnapshot(userDocRef, (userDocSnapshot) => {
-    console.log("currentData", userDocSnapshot.data());
-  });
+  const unsubscribe = onSnapshot(
+    userDocRef,
+    (userDocSnapshot) => {
+      console.log("userSnapshot -> currentData", userDocSnapshot.data());
+    },
+    (error) => {
+      console.log("Error subscribing to document updates:", error);
+    }
+  );
   return unsubscribe;
 };
 
-const unsubscribe = await subscribeToRealtimeUpdates();
+export const subscribeToSubCollectionsUpdates = (
+  email,
+  subCollection,
+  callback
+) => {
+  console.log("subscribeToSubCollectionsUpdates() -> called.");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
+  const subCollectionRef = collection(userDocRef, subCollection);
+  const arr = [];
+  const unsubscribe = onSnapshot(
+    subCollectionRef,
+    (subCollectionSnapshot) => {
+      subCollectionSnapshot.docs.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      console.log("subCollection:", subCollection, " -> currentData", arr);
+    },
+    (error) => {
+      console.log(
+        `Error subscribing to subcollection: ${subCollection} updates:`,
+        error
+      );
+    }
+  );
+  return unsubscribe;
+};
 
 export default {
   checkUserExists,
@@ -236,5 +267,6 @@ export default {
   addNewLink,
   updateLink,
   deleteLink,
-  subscribeToRealtimeUpdates,
+  subscribeToUserDocumentUpdates,
+  subscribeToSubCollectionsUpdates,
 };
