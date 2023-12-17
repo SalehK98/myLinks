@@ -7,11 +7,13 @@ import { useState } from "react";
 import firestoreServices from "../../services/firestoreServices";
 import { useLoginContext } from "../../contexts/LoginContext";
 import * as ActionTypes from "../../contexts/actionTypes";
+import { useUserDataContext } from "../../contexts/userDataContext";
 
 export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { loginState, loginDispatch } = useLoginContext();
+  const { userDataDispatch } = useUserDataContext();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -21,11 +23,14 @@ export default function LoginCard() {
       const user = result.user;
       const userEmail = user.email;
 
-      const [userExists, _] = await firestoreServices.checkUserExists(
+      const [userExists, userData] = await firestoreServices.checkUserExists(
         userEmail
       );
       const userIsPaid =
         userExists && (await firestoreServices.checkIfUserPaid(userEmail));
+
+      if (userExists)
+        userDataDispatch({ type: ActionTypes.SET_USER, payload: userData });
 
       if (userExists && userIsPaid) {
         console.log(result);

@@ -23,7 +23,8 @@ const checkUserExists = async (email) => {
   console.log("called -> checkUserExists()");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const userQuerySnapshot = await getDoc(userDocRef);
-  return [userQuerySnapshot.exists(), userQuerySnapshot];
+  const userData = userQuerySnapshot.data();
+  return [userQuerySnapshot.exists(), userData];
 };
 
 const checkIfUserPaid = async (email) => {
@@ -40,11 +41,11 @@ const checkIfUserPaid = async (email) => {
 // Function to fetch user data
 const getUserData = async (email) => {
   console.log("called -> getUserData()");
-  const [ifUser, snapshot] = await checkUserExists(email);
+  const [ifUser, snapshotData] = await checkUserExists(email);
 
   if (ifUser) {
     // console.log("User Document data:", userQuerySnapshot.data());
-    return snapshot.data();
+    return snapshotData;
   } else {
     // console.log("No such user document!");
     return null; // Or handle the absence of user data as needed.

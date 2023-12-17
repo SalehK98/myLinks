@@ -9,7 +9,7 @@ const withAccessControl = (WrappedComponent) => {
     const { loginState } = useLoginContext();
     const { isLogged, isPaid } = loginState;
     const { userDataState } = useUserDataContext();
-    // const userEmail = ;
+    const userEmail = userDataState.user.email;
 
     const [loading, setLoading] = useState(true);
 
@@ -22,12 +22,11 @@ const withAccessControl = (WrappedComponent) => {
       if (!isLogged) {
         navigate("/");
       } else {
-        console.log(userDataState.user);
         // Subscribe to user updates
-        // userUnsubscribe = firestoreServices.subscribeToUserDocumentUpdates(
-        //   userDataState.user.email,
-        //   navigate
-        // );
+        userUnsubscribe = firestoreServices.subscribeToUserDocumentUpdates(
+          userEmail,
+          navigate
+        );
 
         // Check conditions and navigate accordingly
         if (isPaid) {
@@ -37,7 +36,6 @@ const withAccessControl = (WrappedComponent) => {
         }
       }
       setLoading(false);
-
       // Clean up the subscription when the component unmounts
       return () => {
         if (userUnsubscribe) userUnsubscribe();
