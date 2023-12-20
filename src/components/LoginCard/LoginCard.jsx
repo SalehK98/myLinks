@@ -33,7 +33,7 @@ export default function LoginCard() {
         userDataDispatch({ type: ActionTypes.SET_USER, payload: userData });
 
       if (userExists && userIsPaid) {
-        console.log(result);
+        console.log("result login card", result);
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
         navigate("/home");

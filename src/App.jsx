@@ -11,6 +11,7 @@ import { ModalProvider } from "./contexts/ModalContext";
 import { useLoginContext } from "./contexts/LoginContext";
 import withAccessControl from "./hocs/withAccessControl";
 import { SearchProvider } from "./contexts/SearchContext";
+import AppInitializer from "./components/AppInitializer/AppInitializer";
 
 function App() {
   const { loginState } = useLoginContext();
@@ -61,6 +62,7 @@ function App() {
   ]);
   return (
     <>
+      <AppInitializer />
       <RouterProvider router={router} />
     </>
   );

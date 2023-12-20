@@ -217,13 +217,15 @@ export const deleteCategory = async (email, categoryName) => {
   }
 };
 
-export const subscribeToUserDocumentUpdates = (email, callback) => {
+export const subscribeToUserDocumentUpdates = (email, handleUpdates) => {
   console.log("subscribeToUserDocumentUpdates() -> called.");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const unsubscribe = onSnapshot(
     userDocRef,
     (userDocSnapshot) => {
       console.log("userSnapshot -> currentData", userDocSnapshot.data());
+      const userData = userDocSnapshot.data();
+      handleUpdates(userData.paid, userData.paymentUpdateDate);
     },
     (error) => {
       console.log("Error subscribing to document updates:", error);
