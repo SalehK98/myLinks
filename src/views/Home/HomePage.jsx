@@ -1,115 +1,24 @@
-import { useState, useEffect } from "react";
 import AddLinkButton from "../../components/AddLinkButton/AddLinkButton";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import Modal from "../../components/Modal/Modal";
-import firestoreServices from "../../services/firestoreServices";
-import transformAllUserData from "../../helpers/transformFirestoreData";
 import styles from "../../styles/HomePage.module.css";
-import * as ActionTypes from "../../contexts/actionTypes";
-import { useUserDataContext } from "../../contexts/userDataContext";
 import MainContent from "../../components/MainContent/MainContent";
-import handleSubCollectionsLiveUpdates from "../../helpers/handleSubCollectionsLiveUpdates";
-import {
-  CATEGORY_SUB_COLLECTION,
-  URLS_SUB_COLLECTION,
-} from "../../firebase/constants";
+import useUserDataLoader from "../../hooks/useUserDataLoader";
+import useScrollEffect from "../../hooks/useScrollEffect";
 
 export default function HomePage() {
-  const [scrollEffect, setScrollEffect] = useState(
-    styles.SearchBarWrapperBeforeScroll
+  const scrollEffect = useScrollEffect(
+    styles.SearchBarWrapperBeforeScroll,
+    styles.SearchBarWrapperAfterScroll
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { userDataState, userDataDispatch } = useUserDataContext();
 
-  const onScroll = () => {
-    if (window.scrollY >= 1) {
-      console.log("scrolled");
-      setScrollEffect(styles.SearchBarWrapperAfterScroll);
-    } else {
-      console.log("not scrolled");
-      setScrollEffect(styles.SearchBarWrapperBeforeScroll);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", onScroll);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  });
-
-  // useEffect(() => {
-  //   const fetchCollectionData = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const [user, rawCollectionData] =
-  //         await firestoreServices.getAllDataForSingleUser();
-  //       console.log("rawCollectionData", rawCollectionData);
-  //       const [categories, categoriesWithLinks] =
-  //         transformAllUserData(rawCollectionData);
-  //       // setData(transformedData);
-  //       userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
-  //       console.log("user", user);
-  //       userDataDispatch({
-  //         type: ActionTypes.SET_CATEGORIES,
-  //         payload: categories,
-  //       });
-  //       userDataDispatch({
-  //         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
-  //         payload: categoriesWithLinks,
-  //       });
-  //       setError(null);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       setError(error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchCollectionData();
-  // }, [userDataState.change]);
-
-  useEffect(() => {
-    // let urlsCollectionUnsubscribe
-    // let categoriesCollectionUnsubscribe
-    const userEmail = userDataState.user.email;
-    // setIsLoading(true);
-
-    const urlsCollectionUnsubscribe =
-      firestoreServices.subscribeToSubCollectionsUpdates(
-        userEmail,
-        URLS_SUB_COLLECTION,
-        handleSubCollectionsLiveUpdates,
-        userDataState,
-        userDataDispatch
-      );
-
-    const categoriesCollectionUnsubscribe =
-      firestoreServices.subscribeToSubCollectionsUpdates(
-        userEmail,
-        CATEGORY_SUB_COLLECTION,
-        handleSubCollectionsLiveUpdates,
-        userDataState,
-        userDataDispatch
-      );
-
-    // setIsLoading(false);
-
-    return () => {
-      console.log("this happened");
-      if (urlsCollectionUnsubscribe) urlsCollectionUnsubscribe();
-      if (categoriesCollectionUnsubscribe) categoriesCollectionUnsubscribe();
-    };
-  }, [userDataState.user.email]);
+  const [user, data, isLoading, error] = useUserDataLoader();
 
   if (isLoading) return <>Loading</>;
   if (error) return <>error: {error.message}</>;
 
-  if (userDataState.user) {
+  if (data) {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.sideMenuWrapper}>
