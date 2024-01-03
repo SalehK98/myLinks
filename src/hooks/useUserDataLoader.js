@@ -7,11 +7,11 @@ import * as ActionTypes from "../contexts/actionTypes";
 // Function to update context data
 const updateContextData = (
   userDataDispatch,
-  user,
+  // user,
   categories,
   categoriesWithLinks
 ) => {
-  userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
+  // userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
   userDataDispatch({ type: ActionTypes.SET_CATEGORIES, payload: categories });
   userDataDispatch({
     type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
@@ -26,7 +26,12 @@ const fetchData = async (userDataDispatch, setIsLoading, setError) => {
     const [user, rawCollectionData] = await getAllDataForSingleUser();
     const [categories, categoriesWithLinks] =
       transformAllUserData(rawCollectionData);
-    updateContextData(userDataDispatch, user, categories, categoriesWithLinks);
+    updateContextData(
+      userDataDispatch,
+      // user,
+      categories,
+      categoriesWithLinks
+    );
     setError(null);
     return { user, data: [categories, categoriesWithLinks] };
   } catch (error) {

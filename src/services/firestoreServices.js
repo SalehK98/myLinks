@@ -9,6 +9,7 @@ import {
   arrayRemove,
   arrayUnion,
   writeBatch,
+  onSnapshot,
 } from "firebase/firestore";
 import { firestoreDb } from "../firebase/firebaseConfig";
 import {
@@ -22,7 +23,8 @@ const checkUserExists = async (email) => {
   console.log("called -> checkUserExists()");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const userQuerySnapshot = await getDoc(userDocRef);
-  return [userQuerySnapshot.exists(), userQuerySnapshot];
+  const userData = userQuerySnapshot.data();
+  return [userQuerySnapshot.exists(), userData];
 };
 
 const checkIfUserPaid = async (email) => {
@@ -39,11 +41,11 @@ const checkIfUserPaid = async (email) => {
 // Function to fetch user data
 const getUserData = async (email) => {
   console.log("called -> getUserData()");
-  const [ifUser, snapshot] = await checkUserExists(email);
+  const [ifUser, snapshotData] = await checkUserExists(email);
 
   if (ifUser) {
     // console.log("User Document data:", userQuerySnapshot.data());
-    return snapshot.data();
+    return snapshotData;
   } else {
     // console.log("No such user document!");
     return null; // Or handle the absence of user data as needed.
@@ -215,6 +217,50 @@ export const deleteCategory = async (email, categoryName) => {
   }
 };
 
+export const subscribeToUserDocumentUpdates = (email, handleUpdates) => {
+  console.log("subscribeToUserDocumentUpdates() -> called.");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
+  const unsubscribe = onSnapshot(
+    userDocRef,
+    (userDocSnapshot) => {
+      console.log("userSnapshot -> currentData", userDocSnapshot.data());
+      const userData = userDocSnapshot.data();
+      handleUpdates(userData.paid, userData.paymentUpdateDate);
+    },
+    (error) => {
+      console.log("Error subscribing to document updates:", error);
+    }
+  );
+  return unsubscribe;
+};
+
+export const subscribeToSubCollectionsUpdates = (
+  email,
+  subCollection,
+  callback
+) => {
+  console.log("subscribeToSubCollectionsUpdates() -> called.");
+  const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
+  const subCollectionRef = collection(userDocRef, subCollection);
+  const arr = [];
+  const unsubscribe = onSnapshot(
+    subCollectionRef,
+    (subCollectionSnapshot) => {
+      subCollectionSnapshot.docs.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      console.log("subCollection:", subCollection, " -> currentData", arr);
+    },
+    (error) => {
+      console.log(
+        `Error subscribing to subcollection: ${subCollection} updates:`,
+        error
+      );
+    }
+  );
+  return unsubscribe;
+};
+
 export default {
   checkUserExists,
   checkIfUserPaid,
@@ -224,4 +270,6 @@ export default {
   addNewLink,
   updateLink,
   deleteLink,
+  subscribeToUserDocumentUpdates,
+  subscribeToSubCollectionsUpdates,
 };

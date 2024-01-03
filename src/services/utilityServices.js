@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 function validateForm(formValues, inputs) {
   const inputErrors = {};
 
@@ -70,10 +72,30 @@ export const simpleStringSearch = (stringArr, searchTerm) => {
   return stringArr.filter((str) => str.includes(searchTerm));
 };
 
+export const isValidPaymentDate = (paymentDate) => {
+  // Use fromMillis() method to convert timestamp to DateTime object
+  const userPaymentDate = DateTime.fromMillis(paymentDate);
+
+  // Set desired timezone for calculations (e.g., UTC)
+  const yourTimezone = "UTC";
+
+  // Convert both dates to your chosen timezone for accurate comparison
+  const paymentDateInZone = userPaymentDate.setZone(yourTimezone);
+  const todayInZone = DateTime.local().setZone(yourTimezone);
+
+  // Use diff() method with 'months' unit to calculate month difference
+  const monthsPassed = todayInZone.diff(paymentDateInZone, "months");
+
+  // Check if payment occurred within last month
+  const result = Math.floor(monthsPassed.toObject().months) < 1;
+  return result;
+};
+
 export default {
   validateForm,
   setFormErrors,
   clearError,
   handleChecked,
   simpleStringSearch,
+  isValidPaymentDate,
 };
