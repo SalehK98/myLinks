@@ -46,6 +46,7 @@ export default function HomePage() {
           transformAllUserData(rawCollectionData);
         // setData(transformedData);
         userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
+        console.log("user", user);
         userDataDispatch({
           type: ActionTypes.SET_CATEGORIES,
           payload: categories,

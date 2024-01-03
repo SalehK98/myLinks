@@ -7,11 +7,13 @@ import { useState } from "react";
 import firestoreServices from "../../services/firestoreServices";
 import { useLoginContext } from "../../contexts/LoginContext";
 import * as ActionTypes from "../../contexts/actionTypes";
+import { useUserDataContext } from "../../contexts/userDataContext";
 
 export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const { loginState, loginDispatch } = useLoginContext();
+  const { userDataDispatch } = useUserDataContext();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -21,21 +23,24 @@ export default function LoginCard() {
       const user = result.user;
       const userEmail = user.email;
 
-      const [userExists, _] = await firestoreServices.checkUserExists(
+      const [userExists, userData] = await firestoreServices.checkUserExists(
         userEmail
       );
       const userIsPaid =
         userExists && (await firestoreServices.checkIfUserPaid(userEmail));
 
+      if (userExists)
+        userDataDispatch({ type: ActionTypes.SET_USER, payload: userData });
+
       if (userExists && userIsPaid) {
-        console.log(result);
+        console.log("result login card", result);
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
-        navigator("/home");
+        navigate("/home");
       } else {
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
-        navigator("/not-subscribed");
+        navigate("/not-subscribed");
       }
     } catch (error) {
       // Handle sign-in errors
@@ -45,11 +50,11 @@ export default function LoginCard() {
       const errorCode = error.code;
       if (errorCode === "auth/cancelled-popup-request") {
         // Handle user cancelling the sign-in
-        navigator("/");
+        navigate("/");
       } else if (errorCode === "auth/popup-closed-by-user") {
         // Handle other errors
         console.error(error.code, error.message);
-        navigator("/");
+        navigate("/");
       } else {
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.log("error", credential, error.message, error.code);

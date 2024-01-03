@@ -10,7 +10,7 @@ export function useLoginContext() {
 }
 
 const initialState = {
-  isLogged: true,
+  isLogged: false,
   isPaid: false,
   // isAuthenticated: false,
 };
