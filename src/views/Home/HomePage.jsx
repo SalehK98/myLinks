@@ -9,6 +9,11 @@ import styles from "../../styles/HomePage.module.css";
 import * as ActionTypes from "../../contexts/actionTypes";
 import { useUserDataContext } from "../../contexts/userDataContext";
 import MainContent from "../../components/MainContent/MainContent";
+import handleSubCollectionsLiveUpdates from "../../helpers/handleSubCollectionsLiveUpdates";
+import {
+  CATEGORY_SUB_COLLECTION,
+  URLS_SUB_COLLECTION,
+} from "../../firebase/constants";
 
 export default function HomePage() {
   const [scrollEffect, setScrollEffect] = useState(
@@ -36,36 +41,70 @@ export default function HomePage() {
     };
   });
 
-  useEffect(() => {
-    const fetchCollectionData = async () => {
-      setIsLoading(true);
-      try {
-        const [user, rawCollectionData] =
-          await firestoreServices.getAllDataForSingleUser();
-        const [categories, categoriesWithLinks] =
-          transformAllUserData(rawCollectionData);
-        // setData(transformedData);
-        userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
-        console.log("user", user);
-        userDataDispatch({
-          type: ActionTypes.SET_CATEGORIES,
-          payload: categories,
-        });
-        userDataDispatch({
-          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
-          payload: categoriesWithLinks,
-        });
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCollectionData = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const [user, rawCollectionData] =
+  //         await firestoreServices.getAllDataForSingleUser();
+  //       console.log("rawCollectionData", rawCollectionData);
+  //       const [categories, categoriesWithLinks] =
+  //         transformAllUserData(rawCollectionData);
+  //       // setData(transformedData);
+  //       userDataDispatch({ type: ActionTypes.SET_USER, payload: user });
+  //       console.log("user", user);
+  //       userDataDispatch({
+  //         type: ActionTypes.SET_CATEGORIES,
+  //         payload: categories,
+  //       });
+  //       userDataDispatch({
+  //         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+  //         payload: categoriesWithLinks,
+  //       });
+  //       setError(null);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       setError(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchCollectionData();
-  }, [userDataState.change]);
+  //   fetchCollectionData();
+  // }, [userDataState.change]);
+
+  useEffect(() => {
+    // let urlsCollectionUnsubscribe
+    // let categoriesCollectionUnsubscribe
+    const userEmail = userDataState.user.email;
+    // setIsLoading(true);
+
+    const urlsCollectionUnsubscribe =
+      firestoreServices.subscribeToSubCollectionsUpdates(
+        userEmail,
+        URLS_SUB_COLLECTION,
+        handleSubCollectionsLiveUpdates,
+        userDataState,
+        userDataDispatch
+      );
+
+    const categoriesCollectionUnsubscribe =
+      firestoreServices.subscribeToSubCollectionsUpdates(
+        userEmail,
+        CATEGORY_SUB_COLLECTION,
+        handleSubCollectionsLiveUpdates,
+        userDataState,
+        userDataDispatch
+      );
+
+    // setIsLoading(false);
+
+    return () => {
+      console.log("this happened");
+      if (urlsCollectionUnsubscribe) urlsCollectionUnsubscribe();
+      if (categoriesCollectionUnsubscribe) categoriesCollectionUnsubscribe();
+    };
+  }, [userDataState.user.email]);
 
   if (isLoading) return <>Loading</>;
   if (error) return <>error: {error.message}</>;

@@ -72,7 +72,7 @@ export default function CategoriesBox() {
   const buttonClass = isEditModeButton ? styles.editButton : styles.doneButton;
 
   useEffect(() => {
-    console.log(localCategories);
+    // console.log(localCategories);
   }, [localCategories]);
 
   return (

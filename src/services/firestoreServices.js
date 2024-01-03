@@ -237,19 +237,23 @@ export const subscribeToUserDocumentUpdates = (email, handleUpdates) => {
 export const subscribeToSubCollectionsUpdates = (
   email,
   subCollection,
-  callback
+  callback,
+  userDataState,
+  userDataDispatch
 ) => {
   console.log("subscribeToSubCollectionsUpdates() -> called.");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
   const subCollectionRef = collection(userDocRef, subCollection);
-  const arr = [];
   const unsubscribe = onSnapshot(
     subCollectionRef,
+    { includeMetadataChanges: true },
     (subCollectionSnapshot) => {
-      subCollectionSnapshot.docs.forEach((doc) => {
-        arr.push(doc.data());
-      });
-      console.log("subCollection:", subCollection, " -> currentData", arr);
+      callback(
+        subCollectionSnapshot,
+        subCollection,
+        userDataState,
+        userDataDispatch
+      );
     },
     (error) => {
       console.log(

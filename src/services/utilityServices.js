@@ -72,6 +72,15 @@ export const simpleStringSearch = (stringArr, searchTerm) => {
   return stringArr.filter((str) => str.includes(searchTerm));
 };
 
+export const searchLinkWithId = (categoriesWithLinks, linkId) => {
+  console.log("preforming link search with id", linkId), categoriesWithLinks;
+  const urlsArrays = Object.entries(categoriesWithLinks).map((category) => {
+    return category[1].urls;
+  });
+  const result = urlsArrays.flat().filter((linkObj) => linkObj.id === linkId);
+  return result.length === 1 ? result[0] : {};
+};
+
 export const isValidPaymentDate = (paymentDate) => {
   // Use fromMillis() method to convert timestamp to DateTime object
   const userPaymentDate = DateTime.fromMillis(paymentDate);

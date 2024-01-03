@@ -8,7 +8,7 @@ export default function MainContent() {
   const activeCategory = userDataState.activeCategory;
   const categoriesWithLinks = userDataState.categoriesWithLinks;
   const searchResult = searchState.searchResult;
-  console.log("hghjhkj", searchResult);
+  // console.log("search result", searchResult);
 
   switch (activeCategory) {
     case "all":

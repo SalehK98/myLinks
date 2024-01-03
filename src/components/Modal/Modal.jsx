@@ -17,7 +17,7 @@ export default function Modal() {
   const { modalState, modalDispatch } = useModalContext();
   // const ModalName = LinkEditorModalForm
   console.log("isOpen", modalState.isModalOpen);
-  console.log("modalMode", modalState.modalMode);
+  // console.log("modalMode", modalState.modalMode);
 
   useEffect(() => {
     const handleEscapeKey = (event) => {

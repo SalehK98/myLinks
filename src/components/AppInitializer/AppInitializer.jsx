@@ -12,15 +12,17 @@ export default function AppInitializer() {
 
   const handleSubscription = (isSubscribed, paymentDate) => {
     const isValidDate = isValidPaymentDate(paymentDate);
-    if (isSubscribed && isValidDate && !isPaid) {
+    // console.log("is valid date", isValidDate);
+    if (isSubscribed && isValidDate) {
       loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
-    } else if ((!isSubscribed || !isValidDate) && isPaid) {
+    } else if (!isSubscribed || !isValidDate) {
       loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
     }
   };
 
   useEffect(() => {
     let userUnsubscribe; // Declare the variable outside the conditions
+    // console.log("isPaid in appInit", isPaid);
 
     if (isLogged) {
       const userEmail = userDataState.user.email;
