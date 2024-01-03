@@ -18,7 +18,7 @@ export default function HomePage() {
   if (isLoading) return <>Loading</>;
   if (error) return <>error: {error.message}</>;
 
-  if (user) {
+  if (data) {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.sideMenuWrapper}>
