@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import { useUserDataContext } from "../contexts/userDataContext";
-import { getAllDataForSingleUser } from "../services/firestoreServices";
+import firestoreServices, {
+  getAllDataForSingleUser,
+} from "../services/firestoreServices";
 import transformAllUserData from "../helpers/transformFirestoreData";
 import * as ActionTypes from "../contexts/actionTypes";
+import { CATEGORY_SUB_COLLECTION } from "../firebase/constants";
+import handleSubCollectionsLiveUpdates from "../helpers/handleSubCollectionsLiveUpdates";
+import { useLoginContext } from "../contexts/LoginContext";
 
 // Function to update context data
 const updateContextData = (
@@ -44,7 +49,15 @@ const fetchData = async (userDataDispatch, setIsLoading, setError) => {
 };
 
 function useUserDataLoader() {
+  // setIsLoading,
+  // setError,
+  // loader_counter,
+  // fetch_counter,
+  // cleanup_counter
+  console.log("entered data loader");
+  // loader_counter += 1;
   const { userDataState, userDataDispatch } = useUserDataContext();
+  const { loginState } = useLoginContext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -64,7 +77,56 @@ function useUserDataLoader() {
     fetchDataAndHandleState();
   }, [userDataState.change]);
 
-  return [user, data, isLoading, error];
+  // const userEmail = userDataState.user.email;
+  // let categoriesCollectionUnsubscribe;
+  // let urlsCollectionUnsubscribe;
+
+  // useEffect(() => {
+  //   if (!loginState.isAuthorized) {
+  //     console.log("exited before entered");
+  //     return;
+  //   }
+  //   const fetchDataAndHandleState = async () => {
+  //     console.log("entered fetch data", fetch_counter);
+  //     fetch_counter += 1;
+  //     try {
+  //       // setIsLoading(true);
+  //       categoriesCollectionUnsubscribe =
+  //         await firestoreServices.subscribeToSubCollectionsUpdates(
+  //           userEmail,
+  //           CATEGORY_SUB_COLLECTION,
+  //           handleSubCollectionsLiveUpdates,
+  //           userDataState,
+  //           userDataDispatch
+  //         );
+  //       urlsCollectionUnsubscribe =
+  //         firestoreServices.subscribeToSubCollectionsUpdates(
+  //           userEmail,
+  //           URLS_SUB_COLLECTION,
+  //           handleSubCollectionsLiveUpdates,
+  //           userDataState,
+  //           userDataDispatch
+  //         );
+  //       // setError(false);
+  //     } catch (error) {
+  //       // setError(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //     setUser(userDataState.user);
+  //     setData(userDataState.categoriesWithLinks);
+  //   };
+
+  //   fetchDataAndHandleState();
+
+  //   return () => {
+  //     console.log("entered clean up fore live updates", cleanup_counter);
+  //     cleanup_counter += 1;
+  //     if (categoriesCollectionUnsubscribe) categoriesCollectionUnsubscribe();
+  //     // if (urlsCollectionUnsubscribe) urlsCollectionUnsubscribe();
+  //   };
+  // });
+  return [user, data];
 }
 
 export default useUserDataLoader;

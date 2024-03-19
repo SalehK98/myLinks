@@ -12,6 +12,7 @@ export function useLoginContext() {
 const initialState = {
   isLogged: false,
   isPaid: null,
+  isAuthorized: false,
   // isAuthenticated: false,
 };
 
@@ -21,8 +22,8 @@ function loginReducer(loginState, action) {
       return { ...loginState, isLogged: action.payload };
     case ActionTypes.SET_IS_PAID:
       return { ...loginState, isPaid: action.payload };
-    // case ActionTypes.SET_IS_AUTHENTICATED:
-    //   return { ...loginState, isAuthenticated: action.payload };
+    case ActionTypes.SET_IS_AUTHORIZED:
+      return { ...loginState, isAuthorized: action.payload };
     // Add more cases for other actions as needed
     default:
       return loginState;

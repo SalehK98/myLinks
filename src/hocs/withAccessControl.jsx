@@ -3,9 +3,11 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useLoginContext } from "../contexts/LoginContext";
 
 const withAccessControl = (WrappedComponent) => {
+  console.log("i am in access control", WrappedComponent.name);
   const ControlledComponent = (props) => {
+    console.log("i am in controlled component", WrappedComponent.name);
     const { loginState } = useLoginContext();
-    const { isLogged, isPaid } = loginState;
+    const { isLogged, isAuthorized } = loginState;
 
     const [loading, setLoading] = useState(true);
 
@@ -20,13 +22,13 @@ const withAccessControl = (WrappedComponent) => {
       }
 
       // Check conditions and navigate accordingly
-      if (isPaid) {
+      if (isAuthorized) {
         navigate("/home");
       } else if (WrappedComponent.name === "NotSubscribedPage") {
         navigate("/not-subscribed");
       }
       setLoading(false);
-    }, [isLogged, isPaid, WrappedComponent.name, navigate]);
+    }, [isLogged, isAuthorized, WrappedComponent.name, navigate]);
 
     if (!isLogged && WrappedComponent.name === "LoginPage") {
       return <WrappedComponent {...props} />;
@@ -34,14 +36,14 @@ const withAccessControl = (WrappedComponent) => {
       return <Navigate to="/" />;
     }
 
-    if (!isPaid && WrappedComponent.name === "NotSubscribedPage") {
+    if (!isAuthorized && WrappedComponent.name === "NotSubscribedPage") {
       return <WrappedComponent {...props} />;
-    } else if (!isPaid) {
+    } else if (!isAuthorized) {
       return <Navigate to="/not-subscribed" />;
     }
 
     if (
-      isPaid &&
+      isAuthorized &&
       (WrappedComponent.name === "NotSubscribedPage" ||
         WrappedComponent.name === "LoginPage")
     ) {

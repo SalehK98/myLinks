@@ -19,52 +19,128 @@ function handleSubCollectionsLiveUpdates(
   userDataState,
   userDataDispatch
 ) {
-  const handleInitialSnapshotData = () => {};
-
+  console.log("entered handle ");
   const handleAdded = ({ doc }) => {
+    // console.log(userDataDispatch);
     if (subCollection === CATEGORY_SUB_COLLECTION) {
-      if (userDataState.categories.includes(doc.id)) return;
-      console.log("category does not exist");
+      if (userDataState.categories.includes(doc.id)) {
+        console.log("category exits", doc.id);
+        return;
+      }
+      console.log("categories from state", userDataState.categories);
+      console.log(
+        "categoriesWithLinks from state",
+        userDataState.categoriesWithLinks
+      );
+      console.log("category", doc.id, " does not exist");
       const categoriesArray = [...userDataState.categories];
-      const categoriesWithLinks = { ...userDataState.categoriesWithLinks };
+      console.log("categories temp array", categoriesArray);
+      const categoriesWithLinksObj = { ...userDataState.categoriesWithLinks };
+      console.log("categoriesWithLinks temp obj", categoriesWithLinksObj);
       const newCategory = doc.id;
+      console.log("new category", newCategory);
       const tempArr = [...categoriesArray, newCategory].sort();
-      categoriesWithLinks[newCategory] = {
+      console.log("temp array - sorted", tempArr);
+      categoriesWithLinksObj[newCategory] = {
         id: newCategory,
         urls: [],
       };
+      console.log(
+        "categoriesWithLinksObj after adding new category",
+        categoriesWithLinksObj
+      );
       const sortedCategoriesWithLinks = {};
-      Object.entries(categoriesWithLinks)
+      console.log("sortedCategoriesWithLinks", sortedCategoriesWithLinks);
+      Object.entries(categoriesWithLinksObj)
         .sort()
         .forEach((arr) => {
           sortedCategoriesWithLinks[arr[0]] = arr[1];
         });
+      console.log(
+        "sortedCategoriesWithLinks after sorting",
+        sortedCategoriesWithLinks
+      );
+
       userDataDispatch({
         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
-        payload: categoriesWithLinks,
+        payload: sortedCategoriesWithLinks,
       });
+      console.log(
+        "user data state access for categories array",
+        userDataState.categories
+      );
       userDataDispatch({
         type: ActionTypes.SET_CATEGORIES,
         payload: tempArr,
       });
+      console.log(
+        "user data state access for obj",
+        userDataState.categoriesWithLinks
+      );
     } else if (subCollection === URLS_SUB_COLLECTION) {
-      if (searchLinkWithId(userDataState.categoriesWithLinks, doc.id)) return;
+      if (searchLinkWithId(userDataState.categoriesWithLinks, doc.id)) {
+        console.log("link does exist", doc.id);
+        return;
+      }
+      console.log("categories from state", userDataState.categories);
+      console.log(
+        "categoriesWithLinks from state",
+        userDataState.categoriesWithLinks
+      );
       console.log("link does not exist");
-      const categoriesWithLinks = { ...userDataState.categoriesWithLinks };
+      const categoriesWithLinksTempObj = {
+        ...userDataState.categoriesWithLinks,
+      };
+      console.log("categoriesWithLinksTempObj", categoriesWithLinksTempObj);
       const newLinkObj = doc.data();
+      console.log("new link obj", doc.data());
       newLinkObj["id"] = doc.id;
-      categoriesWithLinks[newLinkObj.categoryName]?.urls
-        ? categoriesWithLinks[newLinkObj.categoryName].urls.push(newLinkObj)
-        : null;
+      console.log("new link obj after adding id", newLinkObj);
+      if (categoriesWithLinksTempObj[newLinkObj.categoryName]?.urls) {
+        // console.log();
+        categoriesWithLinksTempObj[newLinkObj.categoryName].urls.push(
+          newLinkObj
+        );
+        console.log(
+          "obj after checking for category and urls and adding link",
+          categoriesWithLinksTempObj
+        );
 
-      userDataDispatch({
-        type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
-        payload: categoriesWithLinks,
-      });
+        userDataDispatch({
+          type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+          payload: categoriesWithLinksTempObj,
+        });
+        console.log(
+          "get access form user data state",
+          userDataDispatch.categoriesWithLinks
+        );
+      }
+      // categoriesWithLinksTempObj[newLinkObj.categoryName]?.urls
+      //   ? categoriesWithLinksTempObj[newLinkObj.categoryName].urls.push(
+      //       newLinkObj
+      //     )
+      //   : null;
+      // console.log(
+      //   "obj after checking for category and urls and adding link",
+      //   categoriesWithLinksTempObj
+      // );
+
+      // userDataDispatch({
+      //   type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
+      //   payload: categoriesWithLinksTempObj,
+      // });
+      // console.log(
+      //   "get access form user data state",
+      //   userDataDispatch.categoriesWithLinks
+      // );
     }
+    console.log(
+      "------------------------------------------------------------------------------"
+    );
   };
 
   const handleModified = ({ doc }) => {
+    console.log("in modified");
     // If the modified document is from the category sub-collection, return
     if (subCollection === CATEGORY_SUB_COLLECTION) return;
 
@@ -103,22 +179,37 @@ function handleSubCollectionsLiveUpdates(
   };
 
   const handleRemoved = ({ doc }) => {
+    if (!userDataState.categories.includes(doc.id)) {
+      console.log("category does not exits", doc.id);
+      console.log("categories from state", userDataState.categories);
+      return;
+    }
+    console.log("category does exist", doc.id);
     if (subCollection === CATEGORY_SUB_COLLECTION) {
+      console.log("categories from state", userDataState.categories);
+      console.log(
+        "categoriesWithLinks from state",
+        userDataState.categoriesWithLinks
+      );
       const tempArr = [...userDataState.categories]
         .filter((el) => el !== doc.id)
         .sort();
-
+      console.log("temp arr", tempArr);
       const tempObj = { ...userDataState.categoriesWithLinks };
+      console.log("temp obj", tempObj);
       delete tempObj[doc.id];
+      console.log("temp obj after delete", tempObj);
 
       userDataDispatch({
         type: ActionTypes.SET_CATEGORIES,
         payload: tempArr,
       });
+      console.log("categories from state", userDataState.categories);
       userDataDispatch({
         type: ActionTypes.SET_CATEGORIES_WITH_LINKS,
         payload: tempObj,
       });
+      console.log("links form state", userDataState.categoriesWithLinks);
     } else if (subCollection === URLS_SUB_COLLECTION) {
       const LinkId = doc.id;
       const category = doc.data().categoryName;
@@ -156,7 +247,9 @@ function handleSubCollectionsLiveUpdates(
   const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
 
   if (source === "Server") {
+    console.log("entered check if server");
     snapshot.docChanges().forEach((change) => {
+      console.log("entered loop");
       handleChange(change);
     });
   }

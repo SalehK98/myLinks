@@ -234,12 +234,13 @@ export const subscribeToUserDocumentUpdates = (email, handleUpdates) => {
   return unsubscribe;
 };
 
-export const subscribeToSubCollectionsUpdates = (
+export const subscribeToSubCollectionsUpdates = async (
   email,
   subCollection,
   callback,
   userDataState,
-  userDataDispatch
+  userDataDispatch,
+  setIsLoading
 ) => {
   console.log("subscribeToSubCollectionsUpdates() -> called.");
   const userDocRef = doc(firestoreDb, PARENT_COLLECTION_NAME, email);
@@ -252,7 +253,8 @@ export const subscribeToSubCollectionsUpdates = (
         subCollectionSnapshot,
         subCollection,
         userDataState,
-        userDataDispatch
+        userDataDispatch,
+        setIsLoading
       );
     },
     (error) => {

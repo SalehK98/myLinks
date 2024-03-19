@@ -8,6 +8,7 @@ import firestoreServices from "../../services/firestoreServices";
 import { useLoginContext } from "../../contexts/LoginContext";
 import * as ActionTypes from "../../contexts/actionTypes";
 import { useUserDataContext } from "../../contexts/userDataContext";
+import { isValidPaymentDate } from "../../services/utilityServices";
 
 export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,20 +27,29 @@ export default function LoginCard() {
       const [userExists, userData] = await firestoreServices.checkUserExists(
         userEmail
       );
-      const userIsPaid =
-        userExists && (await firestoreServices.checkIfUserPaid(userEmail));
+      // console.log(userData);
+      // const userIsPaid =
+      //   userExists && (await firestoreServices.checkIfUserPaid(userEmail));
+
+      const userIsAuthorized =
+        userEmail &&
+        userData.isPaid &&
+        isValidPaymentDate(userData.paymentUpdateDate);
 
       if (userExists)
         userDataDispatch({ type: ActionTypes.SET_USER, payload: userData });
 
-      if (userExists && userIsPaid) {
+      if (userExists && userIsAuthorized) {
         // console.log("result login card", result);
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
+        loginDispatch({ type: ActionTypes.SET_IS_AUTHORIZED, payload: true });
         navigate("/home");
       } else {
         loginDispatch({ type: ActionTypes.SET_IS_LOGGED, payload: true });
         loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
+        loginDispatch({ type: ActionTypes.SET_IS_AUTHORIZED, payload: false });
+
         navigate("/not-subscribed");
       }
     } catch (error) {

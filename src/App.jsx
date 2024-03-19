@@ -14,15 +14,23 @@ import { SearchProvider } from "./contexts/SearchContext";
 import AppInitializer from "./components/AppInitializer/AppInitializer";
 
 function App() {
+  console.log("entered app");
   const { loginState } = useLoginContext();
   const WrappedHomeComponent = withAccessControl(HomePage);
   const WrappedNotSubscribedComponent = withAccessControl(NotSubscribedPage);
   const WrappedLoginComponent = withAccessControl(LoginPage);
 
+  let counter = 1;
+  let loader_counter = 1;
+  let fetch_counter = 1;
+  let cleanup_counter = 1;
+  let ui_counter = 1;
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <WrappedLoginComponent />,
+      // element: <LoginPage />,
       errorElement: <>Error...sus4</>,
     },
     {
@@ -33,7 +41,14 @@ function App() {
           {/* {loginState.isLogged && ( */}
           {/* <Suspense fallback={<>Loading...</>}> */}
           <SearchProvider>
-            <WrappedHomeComponent />
+            <WrappedHomeComponent
+              counter={counter}
+              loader_counter={loader_counter}
+              fetch_counter={fetch_counter}
+              cleanup_counter={cleanup_counter}
+              ui_counter={ui_counter}
+            />
+            {/* <HomePage /> */}
           </SearchProvider>
           {/* <HomePage /> */}
           {/* </Suspense> */}
@@ -45,7 +60,10 @@ function App() {
     },
     {
       path: "/not-subscribed",
-      element: <WrappedNotSubscribedComponent />,
+      element: (
+        <WrappedNotSubscribedComponent />
+        // <NotSubscribedPage />
+      ),
       errorElement: <>Error... sus2</>,
     },
     {

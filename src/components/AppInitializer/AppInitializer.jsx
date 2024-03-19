@@ -6,15 +6,17 @@ import { isValidPaymentDate } from "../../services/utilityServices";
 import * as ActionTypes from "../../contexts/actionTypes";
 
 export default function AppInitializer() {
+  console.log("entered app init");
   const { loginState, loginDispatch } = useLoginContext();
   const { userDataState } = useUserDataContext();
-  const { isLogged, isPaid } = loginState;
+  const { isLogged, isAuthorized } = loginState;
 
   const handleSubscription = (isSubscribed, paymentDate) => {
     const isValidDate = isValidPaymentDate(paymentDate);
     // console.log("is valid date", isValidDate);
     if (isSubscribed && isValidDate) {
       loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: true });
+      loginDispatch({ type: ActionTypes.SET_IS_AUTHORIZED, payload: true });
     } else if (!isSubscribed || !isValidDate) {
       loginDispatch({ type: ActionTypes.SET_IS_PAID, payload: false });
     }
